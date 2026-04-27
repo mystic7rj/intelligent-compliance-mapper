@@ -1,0 +1,48 @@
+name: Security
+
+on:
+  # Run security scans on each push to the main branch.
+  push:
+    branches: [main]
+  # Run recurring weekly security scans.
+  schedule:
+    - cron: "0 3 * * 1"
+
+jobs:
+  # Run Bandit SAST scan and fail on medium-or-higher findings.
+  bandit-scan:
+    runs-on: ubuntu-latest
+    steps:
+      # Fetch repository contents for security scan execution.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Provision Python runtime used by security tooling.
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Install project dependencies so scanners can resolve imports.
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      # Execute Bandit with medium+ severity threshold enabled.
+      - name: Run Bandit scan
+        run: bandit -r src/ -ll
+
+  # Run dependency vulnerability scan using Safety against installed packages.
+  safety-check:
+    runs-on: ubuntu-latest
+    steps:
+      # Fetch repository contents for dependency scan execution.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Provision Python runtime used by dependency scanner.
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Install project dependencies and safety scanner package.
+      - name: Install dependencies and safety
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt safety
+      # Execute Safety check and fail workflow on vulnerable dependencies.
+      - name: Run Safety check
+        run: safety check

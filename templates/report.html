@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Compliance Report — {{ framework_name }}{% endblock %}
+
+{% block content %}
+
+{# ═══════════════════════════════════════════════════════════
+   Report Header
+   ═══════════════════════════════════════════════════════════ #}
+<header style="margin-bottom:2rem;">
+    <h1>Compliance Report</h1>
+    <p style="color:#64748b;margin:0;">
+        Framework: <strong>{{ framework_name }}</strong> &nbsp;|&nbsp;
+        Generated: {{ analyzed_at }}
+    </p>
+</header>
+
+{# ═══════════════════════════════════════════════════════════
+   Executive Summary
+   ═══════════════════════════════════════════════════════════ #}
+<h2>Executive Summary</h2>
+
+<div class="summary-grid">
+    <div class="summary-card">
+        <div class="value">{{ total_controls }}</div>
+        <div class="label">Total Controls</div>
+    </div>
+    <div class="summary-card">
+        <div class="value">{{ implemented_count }}</div>
+        <div class="label">Implemented</div>
+    </div>
+    <div class="summary-card">
+        <div class="value">{{ missing_controls|length }}</div>
+        <div class="label">Missing</div>
+    </div>
+    <div class="summary-card">
+        <div class="value">{{ compliance_percentage }}%</div>
+        <div class="label">Compliance</div>
+    </div>
+</div>
+
+{# Compliance progress bar #}
+<p style="font-weight:600;margin-bottom:0.25rem;">Compliance Progress</p>
+<div class="progress-container">
+    <div class="progress-bar" style="width: {{ compliance_percentage }}%;">
+        {{ compliance_percentage }}%
+    </div>
+</div>
+
+{# ═══════════════════════════════════════════════════════════
+   Gap Analysis
+   ═══════════════════════════════════════════════════════════ #}
+<h2>Gap Analysis — Missing Controls</h2>
+
+{% include 'partials/gap_table.html' %}
+
+{# ═══════════════════════════════════════════════════════════
+   Risk Summary
+   ═══════════════════════════════════════════════════════════ #}
+<h2>Risk Assessment</h2>
+
+{% include 'partials/risk_summary.html' %}
+
+{# ═══════════════════════════════════════════════════════════
+   Severity Distribution Chart
+   ═══════════════════════════════════════════════════════════ #}
+<h2>Severity Distribution</h2>
+
+{% include 'partials/charts.html' %}
+
+{# ═══════════════════════════════════════════════════════════
+   Footer
+   ═══════════════════════════════════════════════════════════ #}
+<hr style="margin-top:2rem;border:none;border-top:1px solid #e2e8f0;">
+<p style="text-align:center;color:#94a3b8;font-size:0.8rem;margin-top:1rem;">
+    Compliance Mapper — Automated GRC Report &nbsp;|&nbsp; Risk scored at {{ scored_at }}
+</p>
+
+{% endblock %}

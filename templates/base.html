@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compliance Mapper — Automated GRC Report">
+    <title>{% block title %}Compliance Report{% endblock %}</title>
+    <style>
+        /* ── Reset & Base ───────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                         "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── Typography ─────────────────────────────────────── */
+        h1 { font-size: 1.75rem; color: #0f172a; margin-bottom: 0.25rem; }
+        h2 { font-size: 1.35rem; color: #1e3a5f; margin: 2rem 0 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; }
+        h3 { font-size: 1.1rem; color: #334155; margin: 1.25rem 0 0.5rem; }
+        p  { margin-bottom: 0.75rem; }
+
+        /* ── Tables ─────────────────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        tbody tr:hover { background: #f1f5f9; }
+
+        /* ── Badge ──────────────────────────────────────────── */
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .badge-critical { background: #ffebee; color: #b71c1c; }
+        .badge-high     { background: #fff3e0; color: #e65100; }
+        .badge-medium   { background: #fff8e1; color: #f57f17; }
+        .badge-low      { background: #f1f8e9; color: #33691e; }
+
+        /* ── Progress bar ───────────────────────────────────── */
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            height: 26px;
+            margin: 0.5rem 0 1rem;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a5f, #2563eb);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: width 0.4s ease;
+        }
+
+        /* ── Summary Grid ───────────────────────────────────── */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .summary-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .summary-card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .summary-card .label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── Circular Progress ──────────────────────────────── */
+        .circle-wrap {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 8;
+        }
+        .circle-fg {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+        .circle-text {
+            font-size: 1rem;
+            font-weight: 700;
+            fill: #1e3a5f;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        /* ── Bar chart ──────────────────────────────────────── */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            height: 180px;
+            padding: 0 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bar {
+            width: 100%;
+            max-width: 60px;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.4s ease;
+        }
+        .bar-label {
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .bar-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 0.25rem;
+        }
+
+        /* ── Recommendations ────────────────────────────────── */
+        ol.recommendations {
+            padding-left: 1.25rem;
+        }
+        ol.recommendations li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        /* ── Print ──────────────────────────────────────────── */
+        @media print {
+            body { background: #fff; font-size: 11pt; }
+            .container { max-width: 100%; padding: 0; }
+            h2 { page-break-after: avoid; }
+            table { page-break-inside: avoid; }
+            .progress-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        {% block styles %}{% endblock %}
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,36 @@
+{# Gap Analysis Table — missing controls with severity color coding #}
+<table>
+    <thead>
+        <tr>
+            <th>Control ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ctrl in missing_controls %}
+        <tr style="background:
+            {%- if ctrl.priority|upper == 'CRITICAL' %} #ffebee
+            {%- elif ctrl.priority|upper == 'HIGH' %} #fff3e0
+            {%- elif ctrl.priority|upper == 'MEDIUM' %} #fff8e1
+            {%- else %} #f1f8e9
+            {%- endif %};">
+            <td><strong>{{ ctrl.control_id }}</strong></td>
+            <td>{{ ctrl.title }}</td>
+            <td>{{ ctrl.description }}</td>
+            <td>
+                <span class="badge badge-{{ ctrl.priority|lower }}">
+                    {{ ctrl.priority }}
+                </span>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" style="text-align:center;color:#64748b;">
+                No missing controls — full compliance.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

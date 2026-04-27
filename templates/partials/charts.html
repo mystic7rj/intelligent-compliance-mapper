@@ -1,0 +1,54 @@
+{# Charts — pure CSS bar chart for severity distribution #}
+
+{% set max_count = [severity_counts.CRITICAL, severity_counts.HIGH,
+                    severity_counts.MEDIUM, severity_counts.LOW] | max %}
+
+<div class="bar-chart" role="img" aria-label="Bar chart showing finding counts per severity level">
+    {# Critical #}
+    <div class="bar-group">
+        <div class="bar-value">{{ severity_counts.CRITICAL }}</div>
+        <div class="bar"
+             style="height: {% if max_count > 0 %}{{ (severity_counts.CRITICAL / max_count * 140)|int }}px{% else %}0px{% endif %};
+                    background: #b71c1c;"
+             role="img"
+             aria-label="Critical: {{ severity_counts.CRITICAL }} findings">
+        </div>
+        <div class="bar-label">Critical</div>
+    </div>
+
+    {# High #}
+    <div class="bar-group">
+        <div class="bar-value">{{ severity_counts.HIGH }}</div>
+        <div class="bar"
+             style="height: {% if max_count > 0 %}{{ (severity_counts.HIGH / max_count * 140)|int }}px{% else %}0px{% endif %};
+                    background: #e65100;"
+             role="img"
+             aria-label="High: {{ severity_counts.HIGH }} findings">
+        </div>
+        <div class="bar-label">High</div>
+    </div>
+
+    {# Medium #}
+    <div class="bar-group">
+        <div class="bar-value">{{ severity_counts.MEDIUM }}</div>
+        <div class="bar"
+             style="height: {% if max_count > 0 %}{{ (severity_counts.MEDIUM / max_count * 140)|int }}px{% else %}0px{% endif %};
+                    background: #f57f17;"
+             role="img"
+             aria-label="Medium: {{ severity_counts.MEDIUM }} findings">
+        </div>
+        <div class="bar-label">Medium</div>
+    </div>
+
+    {# Low #}
+    <div class="bar-group">
+        <div class="bar-value">{{ severity_counts.LOW }}</div>
+        <div class="bar"
+             style="height: {% if max_count > 0 %}{{ (severity_counts.LOW / max_count * 140)|int }}px{% else %}0px{% endif %};
+                    background: #33691e;"
+             role="img"
+             aria-label="Low: {{ severity_counts.LOW }} findings">
+        </div>
+        <div class="bar-label">Low</div>
+    </div>
+</div>

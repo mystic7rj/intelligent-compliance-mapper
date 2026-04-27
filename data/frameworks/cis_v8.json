@@ -1,0 +1,118 @@
+{
+    "name": "CIS Controls v8",
+    "version": "8.0",
+    "description": "CIS Critical Security Controls version 8 — a prioritized set of actions to protect organizations and data from known cyber attack vectors.",
+    "families": [
+        {
+            "function_name": "Basic Cyber Hygiene",
+            "function_id": "IG",
+            "description": "Implementation Group 1 (IG1) — Essential cyber hygiene controls that every organization should implement.",
+            "controls": [
+                {
+                    "id": "IG.EA-1",
+                    "title": "Establish and Maintain Detailed Enterprise Asset Inventory",
+                    "description": "Actively manage (inventory, track, and correct) all enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/Internet of Things (IoT) devices; and servers) connected to the infrastructure physically, virtually, remotely, and those within cloud environments, to accurately know the totality of assets that need to be monitored and protected within the enterprise.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "IG.SI-1",
+                    "title": "Establish and Maintain Software Inventory",
+                    "description": "Actively manage (inventory, track, and correct) all software (operating systems and applications) on the network so that only authorized software is installed and can execute, and that unauthorized and unmanaged software is found and prevented from installation or execution.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "IG.DP-1",
+                    "title": "Data Protection",
+                    "description": "Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data.",
+                    "priority": "high"
+                },
+                {
+                    "id": "IG.SC-1",
+                    "title": "Secure Configuration of Enterprise Assets and Software",
+                    "description": "Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile, non-computing/IoT devices, and network devices) and software (operating systems and applications).",
+                    "priority": "high"
+                },
+                {
+                    "id": "IG.AM-1",
+                    "title": "Account Management",
+                    "description": "Use processes and tools to assign and manage authorization to credentials for user accounts, including administrator accounts, as well as service accounts, to enterprise assets and software.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "IG.AC-1",
+                    "title": "Access Control Management",
+                    "description": "Use processes and tools to create, assign, manage, and revoke access credentials and privileges for user, administrator, and service accounts for enterprise assets and software.",
+                    "priority": "critical"
+                }
+            ]
+        },
+        {
+            "function_name": "Foundational Controls",
+            "function_id": "I2",
+            "description": "Implementation Group 2 (IG2) — Controls for organizations with moderate cyber risk management resources and expertise.",
+            "controls": [
+                {
+                    "id": "FO.CV-1",
+                    "title": "Continuous Vulnerability Management",
+                    "description": "Develop a plan to continuously assess and track vulnerabilities on all enterprise assets within the enterprise's infrastructure, in order to remediate, and minimize, the window of opportunity for attackers.",
+                    "priority": "high"
+                },
+                {
+                    "id": "FO.AL-1",
+                    "title": "Audit Log Management",
+                    "description": "Collect, alert, review, and retain audit logs of events that could help detect, understand, or recover from an attack.",
+                    "priority": "high"
+                },
+                {
+                    "id": "FO.EB-1",
+                    "title": "Email and Web Browser Protections",
+                    "description": "Improve protections and detections of threats from email and web vectors, as these are opportunities for attackers to manipulate human behavior through direct engagement.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "FO.MD-1",
+                    "title": "Malware Defenses",
+                    "description": "Prevent or control the installation, spread, and execution of malicious applications, code, or scripts on enterprise assets.",
+                    "priority": "high"
+                },
+                {
+                    "id": "FO.DR-1",
+                    "title": "Data Recovery",
+                    "description": "Establish and maintain data recovery practices sufficient to restore in-scope enterprise assets to a pre-incident and trusted state.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "FO.NM-1",
+                    "title": "Network Monitoring and Defense",
+                    "description": "Operate processes and tooling to establish and maintain comprehensive network monitoring and defense against security threats across the enterprise's network infrastructure and user base.",
+                    "priority": "high"
+                }
+            ]
+        },
+        {
+            "function_name": "Organizational Controls",
+            "function_id": "I3",
+            "description": "Implementation Group 3 (IG3) — Controls for organizations with significant cybersecurity resources and expertise.",
+            "controls": [
+                {
+                    "id": "OR.SA-1",
+                    "title": "Security Awareness and Skills Training",
+                    "description": "Establish and maintain a security awareness program to influence behavior among the workforce to be security conscious and properly skilled to reduce cybersecurity risks to the enterprise.",
+                    "priority": "high"
+                },
+                {
+                    "id": "OR.AS-1",
+                    "title": "Application Software Security",
+                    "description": "Manage the security life cycle of in-house developed, hosted, or acquired software to prevent, detect, and remediate security weaknesses before they can impact the enterprise.",
+                    "priority": "high"
+                },
+                {
+                    "id": "OR.IR-1",
+                    "title": "Incident Response Management",
+                    "description": "Establish a program to develop and maintain an incident response capability (e.g., policies, plans, procedures, defined roles, training, and communications) to prepare, detect, and quickly respond to an attack.",
+                    "priority": "critical"
+                }
+            ]
+        }
+    ]
+}

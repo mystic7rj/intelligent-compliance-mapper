@@ -1,0 +1,17 @@
+# Define stack services for local CLI container execution.
+services:
+  # Run compliance mapper CLI in a hardened container context.
+  compliance-mapper:
+    # Build container image from local Dockerfile context.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Load environment variables from local .env without hardcoding secrets.
+    env_file:
+      - .env
+    # Mount framework data directory for runtime read/write access.
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    # Run default help command unless overridden by compose run command.
+    command: ["python", "-m", "src.api.cli", "--help"]

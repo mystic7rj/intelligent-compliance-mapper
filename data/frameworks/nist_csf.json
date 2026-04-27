@@ -1,0 +1,51 @@
+{
+    "name": "NIST CSF",
+    "version": "2.0",
+    "description": "NIST Cybersecurity Framework version 2.0 — a set of guidelines for mitigating organizational cybersecurity risks.",
+    "families": [
+        {
+            "function_name": "Identify",
+            "function_id": "ID",
+            "description": "Develop an organizational understanding to manage cybersecurity risk to systems, people, assets, data, and capabilities.",
+            "controls": [
+                {
+                    "id": "ID.AM-1",
+                    "title": "Physical devices and systems inventory",
+                    "description": "Physical devices and systems within the organization are inventoried.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.AM-2",
+                    "title": "Software platforms and applications inventory",
+                    "description": "Software platforms and applications within the organization are inventoried.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.RA-1",
+                    "title": "Asset vulnerabilities identification",
+                    "description": "Asset vulnerabilities are identified and documented.",
+                    "priority": "critical"
+                }
+            ]
+        },
+        {
+            "function_name": "Protect",
+            "function_id": "PR",
+            "description": "Develop and implement appropriate safeguards to ensure delivery of critical services.",
+            "controls": [
+                {
+                    "id": "PR.AC-1",
+                    "title": "Identities and credentials management",
+                    "description": "Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users, and processes.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "PR.DS-1",
+                    "title": "Data-at-rest protection",
+                    "description": "Data-at-rest is protected with appropriate safeguards.",
+                    "priority": "high"
+                }
+            ]
+        }
+    ]
+}

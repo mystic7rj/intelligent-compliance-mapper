@@ -1,0 +1,55 @@
+{# Risk Summary — badge, circular progress, severity grid, recommendations #}
+
+{# ── Overall risk badge ──────────────────────────────────── #}
+<div style="text-align:center;margin-bottom:1.5rem;">
+    <span class="badge badge-{{ overall_risk_level|lower }}" style="font-size:1.2rem;padding:0.5rem 1.5rem;">
+        {{ overall_risk_level }} RISK
+    </span>
+</div>
+
+{# ── Risk score circular indicator ───────────────────────── #}
+<div style="text-align:center;margin-bottom:1.5rem;">
+    {% set circumference = 251.2 %}
+    {% set offset = circumference - (risk_score / 100 * circumference) %}
+    <svg class="circle-wrap" width="120" height="120" viewBox="0 0 120 120"
+         role="img" aria-label="Risk score {{ risk_score }} out of 100">
+        <circle class="circle-bg" cx="60" cy="60" r="40"></circle>
+        <circle class="circle-fg" cx="60" cy="60" r="40"
+                stroke="{% if risk_score >= 75 %}#b71c1c{% elif risk_score >= 50 %}#e65100{% elif risk_score >= 25 %}#f57f17{% else %}#33691e{% endif %}"
+                stroke-dasharray="{{ circumference }}"
+                stroke-dashoffset="{{ offset }}">
+        </circle>
+        <text class="circle-text" x="60" y="60">{{ risk_score }}</text>
+    </svg>
+    <p style="color:#64748b;font-size:0.85rem;">Risk Score (0–100)</p>
+</div>
+
+{# ── Severity counts grid ────────────────────────────────── #}
+<div class="summary-grid">
+    <div class="summary-card" style="border-left:4px solid #b71c1c;">
+        <div class="value">{{ severity_counts.CRITICAL }}</div>
+        <div class="label">Critical</div>
+    </div>
+    <div class="summary-card" style="border-left:4px solid #e65100;">
+        <div class="value">{{ severity_counts.HIGH }}</div>
+        <div class="label">High</div>
+    </div>
+    <div class="summary-card" style="border-left:4px solid #f57f17;">
+        <div class="value">{{ severity_counts.MEDIUM }}</div>
+        <div class="label">Medium</div>
+    </div>
+    <div class="summary-card" style="border-left:4px solid #33691e;">
+        <div class="value">{{ severity_counts.LOW }}</div>
+        <div class="label">Low</div>
+    </div>
+</div>
+
+{# ── Top recommendations ─────────────────────────────────── #}
+{% if recommendations %}
+<h3>Top Recommendations</h3>
+<ol class="recommendations">
+    {% for rec in recommendations %}
+    <li>{{ rec }}</li>
+    {% endfor %}
+</ol>
+{% endif %}

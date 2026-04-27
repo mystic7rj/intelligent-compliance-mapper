@@ -1,0 +1,118 @@
+{
+    "name": "ISO 27001",
+    "version": "2022",
+    "description": "ISO/IEC 27001:2022 — Information security, cybersecurity and privacy protection. International standard for information security management systems (ISMS).",
+    "families": [
+        {
+            "function_name": "Organizational Controls",
+            "function_id": "A5",
+            "description": "Organizational controls covering information security policies, asset management, and human resource security.",
+            "controls": [
+                {
+                    "id": "IS.PO-1",
+                    "title": "Information security policies",
+                    "description": "A set of policies for information security shall be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals and if significant changes occur.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "IS.RR-1",
+                    "title": "Information security roles and responsibilities",
+                    "description": "Information security roles and responsibilities shall be defined and allocated according to the organization needs.",
+                    "priority": "high"
+                },
+                {
+                    "id": "IS.TI-1",
+                    "title": "Threat intelligence",
+                    "description": "Information relating to information security threats shall be collected and analyzed to produce threat intelligence.",
+                    "priority": "high"
+                },
+                {
+                    "id": "IS.IN-1",
+                    "title": "Inventory of information and other associated assets",
+                    "description": "An inventory of information and other associated assets, including owners, shall be developed and maintained.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "IS.AU-1",
+                    "title": "Acceptable use of information and other associated assets",
+                    "description": "Rules for the acceptable use and procedures for handling information and other associated assets shall be identified, documented and implemented.",
+                    "priority": "high"
+                }
+            ]
+        },
+        {
+            "function_name": "Technological Controls",
+            "function_id": "A8",
+            "description": "Technical controls related to access control, cryptography, physical security, and operations security.",
+            "controls": [
+                {
+                    "id": "TC.ED-1",
+                    "title": "User endpoint devices",
+                    "description": "Information stored on, processed by or accessible via user endpoint devices shall be protected.",
+                    "priority": "high"
+                },
+                {
+                    "id": "TC.PA-1",
+                    "title": "Privileged access rights",
+                    "description": "The allocation and use of privileged access rights shall be restricted and managed.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "TC.AR-1",
+                    "title": "Information access restriction",
+                    "description": "Access to information and other associated assets shall be restricted in accordance with the established topic-specific policy on access control.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "TC.SA-1",
+                    "title": "Secure authentication",
+                    "description": "Secure authentication technologies and procedures shall be implemented based on information access restrictions and the topic-specific policy on access control.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "TC.ID-1",
+                    "title": "Information deletion",
+                    "description": "Information stored in information systems, devices or in any other storage media shall be deleted when no longer required.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "TC.CR-1",
+                    "title": "Use of cryptography",
+                    "description": "Rules for the effective use of cryptography, including cryptographic key management, shall be defined and implemented.",
+                    "priority": "high"
+                },
+                {
+                    "id": "TC.AS-1",
+                    "title": "Application security requirements",
+                    "description": "Information security requirements shall be identified, specified and approved when developing or acquiring applications.",
+                    "priority": "high"
+                }
+            ]
+        },
+        {
+            "function_name": "Physical Controls",
+            "function_id": "A7",
+            "description": "Controls related to physical and environmental security of facilities and equipment.",
+            "controls": [
+                {
+                    "id": "PH.SP-1",
+                    "title": "Physical security perimeters",
+                    "description": "Security perimeters shall be defined and used to protect areas that contain information and other associated assets.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PH.PE-1",
+                    "title": "Physical entry",
+                    "description": "Secure areas shall be protected by appropriate entry controls and access points.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PH.SM-1",
+                    "title": "Physical security monitoring",
+                    "description": "Premises shall be continuously monitored for unauthorized physical access.",
+                    "priority": "medium"
+                }
+            ]
+        }
+    ]
+}

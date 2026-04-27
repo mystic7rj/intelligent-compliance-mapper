@@ -1,0 +1,118 @@
+{
+    "name": "SOC 2",
+    "version": "2017",
+    "description": "SOC 2 Trust Service Criteria — AICPA framework for managing customer data based on five trust service principles: security, availability, processing integrity, confidentiality, and privacy.",
+    "families": [
+        {
+            "function_name": "Logical and Physical Access Controls",
+            "function_id": "CC",
+            "description": "CC6 — Common Criteria for logical and physical access to systems, data, and facilities.",
+            "controls": [
+                {
+                    "id": "LA.PA-1",
+                    "title": "Logical and Physical Access Controls",
+                    "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to meet the entity's objectives.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "LA.NU-1",
+                    "title": "Authorization of New Users",
+                    "description": "Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal and external users whose access is administered by the entity.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "LA.UA-1",
+                    "title": "User Authentication",
+                    "description": "The entity requires identification and authentication of users prior to granting access to system resources and data.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "LA.AR-1",
+                    "title": "Access Removal and Modification",
+                    "description": "The entity removes or modifies access of users whose role or employment has changed or has been terminated.",
+                    "priority": "high"
+                },
+                {
+                    "id": "LA.PR-1",
+                    "title": "Privileged User Access Review",
+                    "description": "The entity grants access to data, system resources, infrastructure, and system configurations based on job responsibilities with the least privilege principle and segregation of duties where applicable.",
+                    "priority": "high"
+                },
+                {
+                    "id": "LA.PH-1",
+                    "title": "Physical Access Controls",
+                    "description": "The entity implements physical access controls to limit access to hardware and computing infrastructure based on authorized roles.",
+                    "priority": "high"
+                }
+            ]
+        },
+        {
+            "function_name": "System Operations",
+            "function_id": "C7",
+            "description": "CC7 — Common Criteria for system operations including monitoring, incident response, and capacity management.",
+            "controls": [
+                {
+                    "id": "SO.DM-1",
+                    "title": "Detection and Monitoring of Security Events",
+                    "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify anomalies, security events, and threats.",
+                    "priority": "high"
+                },
+                {
+                    "id": "SO.RS-1",
+                    "title": "Response to Security Incidents",
+                    "description": "The entity responds to identified security incidents by executing a defined incident response program to understand, contain, remediate, and communicate security incidents, as appropriate.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "SO.EM-1",
+                    "title": "Evaluation and Management of Changes",
+                    "description": "The entity identifies, develops, and implements activities to manage changes to system components and their related processes.",
+                    "priority": "high"
+                },
+                {
+                    "id": "SO.CM-1",
+                    "title": "Capacity Management and Performance",
+                    "description": "The entity monitors the capacity and performance of operating systems, databases, and other system components to meet its objectives.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "SO.BR-1",
+                    "title": "System Backup and Recovery",
+                    "description": "The entity maintains backup and recovery procedures to meet its objectives.",
+                    "priority": "critical"
+                }
+            ]
+        },
+        {
+            "function_name": "Change Management",
+            "function_id": "C8",
+            "description": "CC8 — Common Criteria for managing changes to systems and infrastructure.",
+            "controls": [
+                {
+                    "id": "CM.PR-1",
+                    "title": "Change Management Program",
+                    "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its objectives.",
+                    "priority": "high"
+                },
+                {
+                    "id": "CM.AA-1",
+                    "title": "Change Authorization and Approval",
+                    "description": "Changes are authorized, tested, approved, and communicated prior to implementation.",
+                    "priority": "high"
+                },
+                {
+                    "id": "CM.EP-1",
+                    "title": "Emergency Change Procedures",
+                    "description": "The entity implements emergency change procedures that are documented and approved by management to respond to urgent system issues.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "CM.DA-1",
+                    "title": "Development and Acquisition Standards",
+                    "description": "The entity follows defined system development life cycle standards that address security and availability requirements throughout the development process.",
+                    "priority": "high"
+                }
+            ]
+        }
+    ]
+}

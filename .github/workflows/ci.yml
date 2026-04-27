@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  # Run CI for all pushes targeting the main branch.
+  push:
+    branches: [main]
+  # Run CI for all pull requests targeting the main branch.
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Execute automated tests with coverage enforcement.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Fetch repository contents for this workflow run.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Provision Python 3.11 runtime used by project tooling.
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Install project dependencies required for tests and coverage.
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      # Run pytest with source coverage and fail when coverage drops below threshold.
+      - name: Run test suite with coverage gate
+        run: python -m pytest tests/ --cov=src --cov-fail-under=85
+
+  # Execute static linting and type checks for code quality gates.
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Fetch repository contents for this workflow run.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Provision Python 3.11 runtime used by lint tools.
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Install dependencies required by lint and type-check commands.
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      # Run Ruff checks against source package.
+      - name: Run Ruff lint checks
+        run: ruff check src/
+      # Run mypy static type checks against source package.
+      - name: Run mypy type checks
+        run: mypy src/
