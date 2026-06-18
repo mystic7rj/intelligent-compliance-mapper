@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """CLI tests for analytics command group with mocked dependencies."""
 
 from __future__ import annotations

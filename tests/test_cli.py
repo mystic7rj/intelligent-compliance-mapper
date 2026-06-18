@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Comprehensive CLI tests using click.testing.CliRunner.
 
 All core dependencies (GapAnalyzer, RiskScorer, FrameworkRepository,

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """CLI tests for compare command group with fully mocked ML dependencies."""
 
 from __future__ import annotations

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Abstract base class for all report generators.
 
 Provides shared validation (``validate_output_path``) and sanitisation

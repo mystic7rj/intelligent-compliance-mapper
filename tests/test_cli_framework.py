@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """CLI tests for framework command group with mocked dependencies."""
 
 from __future__ import annotations
@@ -71,6 +72,39 @@ def test_framework_load_valid_path_succeeds(
     assert result.exit_code == 0
     assert "Framework Loaded" in result.output
     assert mock_repo_cls.return_value.save.called
+
+
+# Verify `framework load` returns an already-loaded message for duplicates.
+@patch("src.api.commands.framework.get_session")
+@patch("src.api.commands.framework.get_engine")
+@patch("src.api.commands.framework.FrameworkRepository")
+@patch("src.api.commands.framework.FrameworkLoader")
+@patch("src.api.commands.framework.safe_path")
+def test_framework_load_duplicate_shows_already_loaded(
+    mock_safe_path: MagicMock,
+    mock_loader_cls: MagicMock,
+    mock_repo_cls: MagicMock,
+    _mock_engine: MagicMock,
+    mock_session: MagicMock,
+    tmp_path: Path,
+    mock_framework,
+) -> None:
+    framework_file = tmp_path / "nist_csf.json"
+    framework_file.write_text(json.dumps({"name": "NIST_CSF"}), encoding="utf-8")
+    mock_safe_path.return_value = framework_file
+    mock_loader_cls.return_value.load.return_value = mock_framework
+    mock_repo_cls.return_value.get_by_name.return_value = SimpleNamespace(
+        name=mock_framework.name,
+        version=mock_framework.version,
+    )
+    mock_session.return_value.__enter__ = MagicMock(return_value=MagicMock())
+    mock_session.return_value.__exit__ = MagicMock(return_value=False)
+
+    result = CliRunner().invoke(cli, ["framework", "load", "--path", str(framework_file)])
+
+    assert result.exit_code == 0
+    assert "Framework Already Loaded" in result.output
+    assert not mock_repo_cls.return_value.save.called
 
 
 # Verify `framework load` renders an error panel when JSON loading fails.

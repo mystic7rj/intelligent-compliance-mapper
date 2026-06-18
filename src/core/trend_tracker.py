@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """In-memory trend tracker for analytics summaries.
 
 Stores framework analytics snapshots and provides historical trend and

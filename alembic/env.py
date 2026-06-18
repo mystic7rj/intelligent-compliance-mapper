@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Alembic environment configuration for the Compliance Mapper.
 
 Reads ``DATABASE_URL`` from the ``.env`` file and sets it on the Alembic

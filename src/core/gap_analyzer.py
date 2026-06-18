@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Gap analysis engine for the Compliance Mapper.
 
 Compares a framework's full control set against a list of implemented
@@ -7,8 +8,6 @@ method) — never imports or creates a repository directly.
 """
 
 from __future__ import annotations
-
-import re
 from datetime import UTC, datetime
 from typing import Any, Protocol, runtime_checkable
 
@@ -16,6 +15,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from src.core.exceptions import FrameworkNotFoundError, GapAnalysisError, ValidationError
 from src.utils.logger import get_logger
+from src.utils.validators import ValidationError as InputValidationError
+from src.utils.validators import validate_control_id
 
 logger = get_logger(__name__)
 
@@ -29,11 +30,12 @@ ALLOWED_FRAMEWORKS: frozenset[str] = frozenset(
     {"NIST_CSF", "ISO_27001", "CIS_V8", "SOC2"}
 )
 
-# SECURITY: Regex pattern validates control ID format to prevent malformed input
-# Accepts formats like "ID.AM-1" or "AC-1" but rejects suspicious patterns
-_CONTROL_ID_PATTERN: re.Pattern[str] = re.compile(
-    r"^[A-Z0-9]{2,10}(\.[A-Z0-9\-]{1,10})?$"
-)
+NAME_MAP = {
+    "NIST_CSF": "NIST CSF",
+    "ISO_27001": "ISO 27001",
+    "CIS_V8": "CIS Controls v8",
+    "SOC2": "SOC 2",
+}
 
 # ---------------------------------------------------------------------------
 # Protocol — what the analyzer needs from its data source
@@ -126,7 +128,10 @@ class GapAnalyzer:
 
         # 3. Fetch framework from repository
         try:
-            framework = self._repository.get_by_name(cleaned_name)
+            framework_name_for_repo = NAME_MAP.get(cleaned_name, cleaned_name)
+            framework = self._repository.get_by_name(framework_name_for_repo)
+            if framework is None and framework_name_for_repo != cleaned_name:
+                framework = self._repository.get_by_name(cleaned_name)
         except Exception as exc:
             msg = f"Repository error while fetching framework '{cleaned_name}'"
             raise GapAnalysisError(msg, details={"cause": str(exc)}) from exc
@@ -192,13 +197,16 @@ class GapAnalyzer:
         valid: list[str] = []
         for raw_id in ids:
             stripped = raw_id.strip()
-            if _CONTROL_ID_PATTERN.match(stripped):
-                valid.append(stripped)
-            else:
+            try:
+                cleaned = validate_control_id(stripped)
+            except InputValidationError:
                 logger.warning(
                     "Skipping malformed control ID",
                     extra={"raw_control_id": stripped},
                 )
+                continue
+            else:
+                valid.append(cleaned)
         return valid
 
     @staticmethod

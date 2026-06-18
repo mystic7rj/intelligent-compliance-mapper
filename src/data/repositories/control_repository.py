@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Repository for control data access.
 
 Provides read and bulk-write operations for ``ControlTable`` entities.

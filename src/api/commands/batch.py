@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Click command group for batch report processing.
 
 Provides ``run``, ``run-all``, ``status``, and ``list-jobs`` sub-commands.

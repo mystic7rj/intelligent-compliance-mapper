@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """CLI tests for batch command group with mocked processing."""
 
 from __future__ import annotations

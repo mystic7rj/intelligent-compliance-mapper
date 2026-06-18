@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Cross-framework control matching using ML embeddings.
 
 Orchestrates ``EmbeddingGenerator`` and ``SimilarityCalculator`` to find

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the FrameworkRegistry module.
 
 Tests framework metadata retrieval, validation, and batch loading operations.

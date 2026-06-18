@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the database layer — repositories, session management, and schema.
 
 All tests use in-memory SQLite (``sqlite:///:memory:``) and never touch
@@ -11,7 +12,6 @@ import uuid
 
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from src.data.database import DatabaseConfigError, get_engine, get_session
@@ -152,20 +152,19 @@ class TestFrameworkRepository:
         deleted = framework_repo.delete(uuid.uuid4())
         assert deleted is False
 
-    def test_save_duplicate_name_version_raises(
+    def test_save_duplicate_name_version_returns_existing(
         self,
         framework_repo: FrameworkRepository,
         saved_framework: FrameworkTable,
-        db_session: Session,
     ) -> None:
         duplicate = FrameworkTable(
             name="NIST CSF",
             version="2.0",
             description="Duplicate",
         )
-        with pytest.raises(IntegrityError):
-            framework_repo.save(duplicate)
-            db_session.flush()
+        result = framework_repo.save(duplicate)
+        assert result.id == saved_framework.id
+        assert framework_repo.get_all() == [saved_framework]
 
     def test_save_empty_name_raises(
         self, framework_repo: FrameworkRepository
@@ -313,24 +312,20 @@ class TestControlRepository:
 class TestTransactionRollback:
     """Verify that session rollback works correctly on errors."""
 
-    def test_rollback_on_constraint_violation(self, db_engine) -> None:
-        """A constraint violation should not corrupt the session."""
+    def test_duplicate_save_keeps_session_usable(self, db_engine) -> None:
+        """An idempotent duplicate save should keep session state healthy."""
         # Use an independent session so the first save actually commits
         with Session(bind=db_engine) as session:
             repo = FrameworkRepository(session)
             repo.save(FrameworkTable(name="ISO 27001", version="2022"))
             session.commit()
 
-        # New session: attempt a duplicate — should fail
+        # New session: attempt a duplicate — should return existing row
         with Session(bind=db_engine) as session:
             repo = FrameworkRepository(session)
             dup = FrameworkTable(name="ISO 27001", version="2022")
-            with pytest.raises(IntegrityError):
-                repo.save(dup)
-                session.flush()
-
-            # Session should still be usable after rollback
-            session.rollback()
+            existing = repo.save(dup)
+            assert existing is not None
             result = repo.get_all()
             assert len(result) == 1
 

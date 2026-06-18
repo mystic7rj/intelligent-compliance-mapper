@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Main CLI entry point for the Compliance Mapper.
 
 Registers all command groups and provides global ``--verbose`` flag.

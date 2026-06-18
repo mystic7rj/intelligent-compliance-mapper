@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Click command group for framework management.
 
 Orchestrates FrameworkRepository, ControlRepository, and FrameworkLoader —
@@ -55,27 +56,27 @@ def list_frameworks() -> None:
             repo = FrameworkRepository(session)
             frameworks = repo.get_all()
 
-        if not frameworks:
-            console.print(Panel(
-                "[yellow]No frameworks loaded[/yellow]\n"
-                "Use [bold]framework load --path <file>[/bold] to load one.",
-                title="📋 Frameworks",
-                border_style="yellow",
-            ))
-            return
+            if not frameworks:
+                console.print(Panel(
+                    "[yellow]No frameworks loaded[/yellow]\n"
+                    "Use [bold]framework load --path <file>[/bold] to load one.",
+                    title="📋 Frameworks",
+                    border_style="yellow",
+                ))
+                return
 
-        table = Table(title="Loaded Frameworks", show_lines=True)
-        table.add_column("Name", style="bold cyan")
-        table.add_column("Control Count", justify="right")
-        table.add_column("Loaded At")
+            table = Table(title="Loaded Frameworks", show_lines=True)
+            table.add_column("Name", style="bold cyan")
+            table.add_column("Control Count", justify="right")
+            table.add_column("Loaded At")
 
-        for fw in frameworks:
-            # Count controls across all families
-            control_count = sum(len(fam.controls) for fam in fw.families)
-            loaded_at = fw.created_at.strftime("%Y-%m-%d %H:%M:%S") if fw.created_at else "N/A"
-            table.add_row(fw.name, str(control_count), loaded_at)
+            for fw in frameworks:
+                # Count controls across all families
+                control_count = sum(len(fam.controls) for fam in fw.families)
+                loaded_at = fw.created_at.strftime("%Y-%m-%d %H:%M:%S") if fw.created_at else "N/A"
+                table.add_row(fw.name, str(control_count), loaded_at)
 
-        console.print(table)
+            console.print(table)
 
     except Exception as exc:
         if _is_missing_schema_error(exc):
@@ -107,47 +108,59 @@ def load_framework(path: str) -> None:
         validated_path = safe_path(Path.cwd(), path)
 
         # Load framework from JSON using FrameworkLoader
-        loader = FrameworkLoader(validated_path.parent)
+        loader = FrameworkLoader(Path("data/frameworks"))
         framework_data = loader.load(validated_path.stem)
 
         # Persist to database via FrameworkRepository
         engine = get_engine()
+        already_loaded = False
         with get_session(engine) as session:
             repo = FrameworkRepository(session)
+            existing = repo.get_by_name(framework_data.name)
+            if existing is not None and existing.version == framework_data.version:
+                already_loaded = True
+            else:
+                # Convert Pydantic model to ORM table for persistence
+                from src.data.schema import ControlFamilyTable, ControlTable, FrameworkTable
 
-            # Convert Pydantic model to ORM table for persistence
-            from src.data.schema import ControlFamilyTable, ControlTable, FrameworkTable
-
-            fw_row = FrameworkTable(
-                name=framework_data.name,
-                version=framework_data.version,
-                description=framework_data.description,
-            )
-            for family in framework_data.families:
-                fam_row = ControlFamilyTable(
-                    function_name=family.function_name,
-                    function_id=family.function_id,
-                    description=family.description,
+                fw_row = FrameworkTable(
+                    name=framework_data.name,
+                    version=framework_data.version,
+                    description=framework_data.description,
                 )
-                for ctrl in family.controls:
-                    ctrl_row = ControlTable(
-                        control_id=ctrl.id,
-                        title=ctrl.title,
-                        description=ctrl.description,
-                        priority=ctrl.priority.value,
+                for family in framework_data.families:
+                    fam_row = ControlFamilyTable(
+                        function_name=family.function_name,
+                        function_id=family.function_id,
+                        description=family.description,
                     )
-                    fam_row.controls.append(ctrl_row)
-                fw_row.families.append(fam_row)
+                    for ctrl in family.controls:
+                        ctrl_row = ControlTable(
+                            control_id=ctrl.id,
+                            title=ctrl.title,
+                            description=ctrl.description,
+                            priority=ctrl.priority.value,
+                        )
+                        fam_row.controls.append(ctrl_row)
+                    fw_row.families.append(fam_row)
 
-            repo.save(fw_row)
+                repo.save(fw_row)
 
-        console.print(Panel(
-            f"[green]Successfully loaded framework:[/green] [bold]{framework_data.name}[/bold]\n"
-            f"Version: {framework_data.version}\n"
-            f"Total Controls: {framework_data.total_controls}",
-            title="✅ Framework Loaded",
-            border_style="green",
-        ))
+        if already_loaded:
+            console.print(Panel(
+                f"[yellow]Framework already loaded:[/yellow] [bold]{framework_data.name}[/bold]\n"
+                f"Version: {framework_data.version}",
+                title="ℹ️ Framework Already Loaded",
+                border_style="yellow",
+            ))
+        else:
+            console.print(Panel(
+                f"[green]Successfully loaded framework:[/green] [bold]{framework_data.name}[/bold]\n"
+                f"Version: {framework_data.version}\n"
+                f"Total Controls: {framework_data.total_controls}",
+                title="✅ Framework Loaded",
+                border_style="green",
+            ))
 
     except SecurityError as exc:
         console.print(Panel(

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Maturity scoring model for compliance analytics.
 
 Maps compliance and risk outcomes to a maturity level with actionable

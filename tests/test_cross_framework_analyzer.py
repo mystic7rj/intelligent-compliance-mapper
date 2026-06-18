@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the CrossFrameworkAnalyzer module.
 
 Tests cross-framework mapping analysis, equivalence generation, and validation.
@@ -26,7 +27,7 @@ def mock_matcher() -> Mock:
     matcher = Mock()
     
     # Default behavior: return empty list
-    matcher.match_controls.return_value = []
+    matcher.match_framework.return_value = []
     
     return matcher
 
@@ -104,7 +105,7 @@ def test_analyze_returns_cross_framework_result_with_correct_fields(
             confidence="MEDIUM",
         ),
     ]
-    mock_matcher.match_controls.return_value = sample_matches
+    mock_matcher.match_framework.return_value = sample_matches
     
     # Run analysis
     result = analyzer.analyze("nist_csf", "iso_27001")
@@ -142,7 +143,7 @@ def test_mapping_percentage_is_between_zero_and_one_hundred(
             confidence="HIGH",
         ),
     ]
-    mock_matcher.match_controls.return_value = sample_matches
+    mock_matcher.match_framework.return_value = sample_matches
     
     result = analyzer.analyze("nist_csf", "iso_27001")
     
@@ -150,7 +151,7 @@ def test_mapping_percentage_is_between_zero_and_one_hundred(
     assert 0.0 <= result.mapping_percentage <= 100.0
     
     # Test with no matches
-    mock_matcher.match_controls.return_value = []
+    mock_matcher.match_framework.return_value = []
     result = analyzer.analyze("nist_csf", "iso_27001")
     
     # Should be 0.0
@@ -166,7 +167,7 @@ def test_analyze_all_pairs_returns_exactly_six_results(
     Verifies that all unique combinations of the 4 frameworks are analyzed.
     """
     # Set up matcher to return empty results
-    mock_matcher.match_controls.return_value = []
+    mock_matcher.match_framework.return_value = []
     
     # Run analysis for all pairs
     results = analyzer.analyze_all_pairs()
@@ -250,7 +251,7 @@ def test_get_equivalence_map_returns_dict_keyed_by_source_control_ids(
             confidence="MEDIUM",
         ),
     ]
-    mock_matcher.match_controls.return_value = sample_matches
+    mock_matcher.match_framework.return_value = sample_matches
     
     # Get equivalence map
     equivalence_map = analyzer.get_equivalence_map("nist_csf", "iso_27001")
@@ -300,7 +301,7 @@ def test_get_equivalence_map_filters_low_confidence_matches(
             confidence="LOW",  # Should be filtered out
         ),
     ]
-    mock_matcher.match_controls.return_value = sample_matches
+    mock_matcher.match_framework.return_value = sample_matches
     
     # Get equivalence map
     equivalence_map = analyzer.get_equivalence_map("nist_csf", "iso_27001")
@@ -319,7 +320,7 @@ def test_result_is_immutable_assignment_raises_error(
     Verifies that attempting to modify result fields raises an error.
     """
     # Set up matcher
-    mock_matcher.match_controls.return_value = []
+    mock_matcher.match_framework.return_value = []
     
     # Run analysis
     result = analyzer.analyze("nist_csf", "iso_27001")
@@ -341,7 +342,7 @@ def test_analyze_raises_gap_analysis_error_when_matcher_fails(
     Verifies proper error handling when the control matcher encounters issues.
     """
     # Set up matcher to raise exception
-    mock_matcher.match_controls.side_effect = Exception("Matching failed")
+    mock_matcher.match_framework.side_effect = Exception("Matching failed")
     
     # Try to analyze - should raise GapAnalysisError
     with pytest.raises(GapAnalysisError) as exc_info:

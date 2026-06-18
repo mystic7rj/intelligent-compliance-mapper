@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ML sub-package — sentence-transformer-based control similarity engine.
 
 Exports embedding generation, similarity calculation, and control matching

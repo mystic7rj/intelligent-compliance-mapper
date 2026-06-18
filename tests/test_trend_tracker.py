@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for in-memory analytics trend tracking behavior."""
 
 from __future__ import annotations

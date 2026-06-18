@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Core Pydantic models for the Compliance Mapper framework.
 
 Defines the data structures for compliance controls, control families,
@@ -74,16 +75,18 @@ class Control(BaseModel):
         Raises:
             ValueError: If the control ID doesn't match the required pattern.
         """
-        # Define strict pattern for control IDs to ensure consistency
-        # Format: XX.XX-N where X=uppercase letter, N=1-2 digits
-        pattern = r"^[A-Z]{2}\.[A-Z]{2}-\d{1,2}$"
+        # Define pattern for control IDs to support multiple formats:
+        # 1. NIST CSF format: XX.XX-N (e.g., ID.AM-1)
+        # 2. ISO 27001 format: A.N.N (e.g., A.5.1)
+        # Requires at least one letter and follows letter/digit separator patterns
+        pattern = r"^(?=.*[A-Z])[A-Z0-9]{1,3}(?:\.[A-Z]{0,2})?(?:[\.\-])\d{1,2}(?:[\.\-]\d{1,2})?$"
         
         # SECURITY: Input validation prevents malformed control IDs from
         # entering the system which could cause parsing errors or injection
         if not re.match(pattern, value):
             msg = (
                 f"Control ID '{value}' does not match required format "
-                f"(e.g. 'ID.AM-1'). Pattern: {pattern}"
+                f"(e.g. 'ID.AM-1' or 'A.5.1'). Pattern: {pattern}"
             )
             raise ValueError(msg)
         

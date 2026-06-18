@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Security hardening tests for sanitization and path validation."""
 
 from __future__ import annotations

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """PDF report generator using ReportLab.
 
 Produces a professional compliance report as a standalone .pdf document

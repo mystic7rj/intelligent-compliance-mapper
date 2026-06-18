@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for analytics summary, comparison, and prioritization."""
 
 from __future__ import annotations

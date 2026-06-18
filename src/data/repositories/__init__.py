@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Repository sub-package — data-access-only classes for ORM entities."""
 
 from __future__ import annotations

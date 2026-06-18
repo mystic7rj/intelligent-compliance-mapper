@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Unit tests for the report scheduler.
 
 BatchProcessor is fully mocked — zero real processing.  Tests verify

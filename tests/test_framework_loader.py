@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the FrameworkLoader — valid loading, error cases, and security."""
 
 from __future__ import annotations

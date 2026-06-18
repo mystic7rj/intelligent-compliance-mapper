@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Centralized custom exceptions for the Compliance Mapper project.
 
 Every custom exception carries a ``message`` string and an optional

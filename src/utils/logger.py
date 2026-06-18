@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Structured logger for the Compliance Mapper application.
 
 Reads log level from environment variables via python-dotenv.

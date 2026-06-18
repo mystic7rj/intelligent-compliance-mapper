@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for EmbeddingGenerator — validation, caching, and shape checks.
 
 SentenceTransformer is mocked via ``unittest.mock.patch`` so no real ML

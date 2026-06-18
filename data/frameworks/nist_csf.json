@@ -1,49 +1,431 @@
 {
     "name": "NIST CSF",
     "version": "2.0",
-    "description": "NIST Cybersecurity Framework version 2.0 — a set of guidelines for mitigating organizational cybersecurity risks.",
+    "description": "NIST Cybersecurity Framework version 2.0 — a set of guidelines for mitigating organizational cybersecurity risks across 6 functions and 23 categories with 106 controls.",
     "families": [
+        {
+            "function_name": "Govern",
+            "function_id": "GV",
+            "description": "The Govern (GV) function encompasses organizational, management, and technical activities to enable an organization to establish systems and processes that are foundational to protecting the organization and its stakeholders.",
+            "controls": [
+                {
+                    "id": "GV.OC-01",
+                    "title": "Organizational context is understood",
+                    "description": "The organization understands its organizational context and how it creates, processes, maintains, and exchanges information and data that could be affected by or could affect cybersecurity.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.OC-02",
+                    "title": "External environment is understood",
+                    "description": "The organization understands the external environment in which it operates and how cybersecurity risks in that environment can affect the organization.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.OC-03",
+                    "title": "Organizational direction is established",
+                    "description": "The organization establishes organizational direction and commitment regarding cybersecurity through communication of organizational values, mission, vision, and the role of cybersecurity.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.OC-04",
+                    "title": "Cybersecurity accountability is established",
+                    "description": "The organization establishes roles and responsibilities for cybersecurity, including roles and responsibilities for the governance of cybersecurity.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "GV.RM-01",
+                    "title": "Risk management strategy is established",
+                    "description": "The organization establishes and implements a risk management strategy that includes determining risk tolerance and the organization's approach to risk assessment, analysis, response, and monitoring.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "GV.RM-02",
+                    "title": "Organizational risk is determined",
+                    "description": "The organization determines organizational risk by analyzing the likelihood and magnitude of negative impacts from cybersecurity events.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "GV.RM-03",
+                    "title": "Risk appetite is established",
+                    "description": "The organization establishes a risk appetite that is used to guide decisions about risk response and the organization's tolerance for risk.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.RR-01",
+                    "title": "Rules of engagement are established",
+                    "description": "The organization establishes rules of engagement for cybersecurity interactions and engagements with internal and external stakeholders.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "GV.RR-02",
+                    "title": "Agreements with external entities are established",
+                    "description": "The organization establishes agreements with external entities that include terms for the secure exchange and storage of information and data.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.RR-03",
+                    "title": "Supply chain risk management is conducted",
+                    "description": "The organization conducts supply chain risk management activities with the intent to manage the cybersecurity risks associated with the development, procurement, maintenance, and disposal of organization information, systems, and services.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.PO-01",
+                    "title": "Policies are established",
+                    "description": "The organization establishes and implements cybersecurity policies, processes, procedures, and standards that include the identification of information and systems to be protected, roles and responsibilities, and enforcement mechanisms.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "GV.PO-02",
+                    "title": "Cybersecurity is integrated into planning processes",
+                    "description": "The organization integrates cybersecurity into organizational planning processes and programs, including business continuity planning, operational planning, capital planning, and security planning.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.PO-03",
+                    "title": "Policies are monitored",
+                    "description": "The organization monitors and reviews its cybersecurity policies and procedures on a periodic basis to determine their effectiveness and to ensure alignment with organizational objectives.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "GV.OV-01",
+                    "title": "Cybersecurity status is visible",
+                    "description": "The organization provides cybersecurity information and the current status of cybersecurity risk at all levels of the organization through appropriate communication mechanisms.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.OV-02",
+                    "title": "Environmental factors are understood",
+                    "description": "The organization understands environmental factors relevant to its cybersecurity program including regulatory factors, legal factors, and other requirements related to cybersecurity.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "GV.SC-01",
+                    "title": "Cybersecurity supply chain risk management is integrated",
+                    "description": "The organization integrates cybersecurity supply chain risk management into the organization's overall cybersecurity program.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.SC-02",
+                    "title": "Cyber supply chain risk management process is established",
+                    "description": "The organization establishes a cyber supply chain risk management process and assigns roles and responsibilities for managing cyber supply chain risks.",
+                    "priority": "high"
+                },
+                {
+                    "id": "GV.SC-03",
+                    "title": "Supply chain relationships are reviewed",
+                    "description": "The organization reviews the cybersecurity risks associated with organizational suppliers and business partners, including the security capabilities of external providers and their ability to meet security requirements.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "GV.SC-04",
+                    "title": "Supply chain events are managed",
+                    "description": "The organization manages cybersecurity events or conditions that may result from upstream or downstream supply chain partners.",
+                    "priority": "high"
+                }
+            ]
+        },
         {
             "function_name": "Identify",
             "function_id": "ID",
-            "description": "Develop an organizational understanding to manage cybersecurity risk to systems, people, assets, data, and capabilities.",
+            "description": "The Identify (ID) function encompasses activities to develop an organizational understanding to manage cybersecurity risk to systems, people, assets, data, and capabilities.",
             "controls": [
                 {
-                    "id": "ID.AM-1",
-                    "title": "Physical devices and systems inventory",
-                    "description": "Physical devices and systems within the organization are inventoried.",
+                    "id": "ID.AM-01",
+                    "title": "Physical devices and systems within the organization are inventoried",
+                    "description": "Physical devices and systems within the organization are inventoried and details such as device type, model, serial number, function, location, and network address are recorded.",
                     "priority": "high"
                 },
                 {
-                    "id": "ID.AM-2",
-                    "title": "Software platforms and applications inventory",
-                    "description": "Software platforms and applications within the organization are inventoried.",
+                    "id": "ID.AM-02",
+                    "title": "Software platforms and applications within the organization are inventoried",
+                    "description": "Software platforms and applications within the organization are inventoried and details such as software/application name, version, type, vendor information, hosting location, and license information are recorded.",
                     "priority": "high"
                 },
                 {
-                    "id": "ID.RA-1",
-                    "title": "Asset vulnerabilities identification",
-                    "description": "Asset vulnerabilities are identified and documented.",
+                    "id": "ID.AM-03",
+                    "title": "Organizational communication and data flows are mapped",
+                    "description": "Communication and data flows (including user identification, purpose, and authorization levels) throughout the organization are mapped and documented.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.RA-01",
+                    "title": "Asset vulnerabilities are identified and documented",
+                    "description": "Asset vulnerabilities are identified, documented, categorized, and communicated to organizational personnel so that the vulnerabilities can be addressed.",
                     "priority": "critical"
+                },
+                {
+                    "id": "ID.RA-02",
+                    "title": "Threat and vulnerability information is received from external organizations",
+                    "description": "Threat and vulnerability information is continuously received from external organizations and used to inform organizational risk assessments.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.RA-03",
+                    "title": "Internal threats are identified and documented",
+                    "description": "Internal threats are identified and documented. As part of the threat identification process, the organization determines potential internal threats and evaluates the likelihood and magnitude of negative impacts.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "ID.IM-01",
+                    "title": "Organizational data is inventoried",
+                    "description": "Organizational data, including categorization, is inventoried based on the results of the information and asset risk assessment process.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.IM-02",
+                    "title": "Data handling practices are established",
+                    "description": "Data handling practices are established in accordance with the organization's risk strategy to include the classification, labeling, handling, retention, and secure disposal of data.",
+                    "priority": "high"
+                },
+                {
+                    "id": "ID.IM-03",
+                    "title": "Data is securely disposed of",
+                    "description": "Data is securely disposed of in accordance with the organization's data security and privacy policies, and its information risk management strategy.",
+                    "priority": "medium"
                 }
             ]
         },
         {
             "function_name": "Protect",
             "function_id": "PR",
-            "description": "Develop and implement appropriate safeguards to ensure delivery of critical services.",
+            "description": "The Protect (PR) function encompasses activities to develop and implement appropriate safeguards to ensure delivery of critical services.",
             "controls": [
                 {
-                    "id": "PR.AC-1",
-                    "title": "Identities and credentials management",
-                    "description": "Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users, and processes.",
+                    "id": "PR.AA-01",
+                    "title": "Identities and credentials are managed for authorized devices, users and processes",
+                    "description": "Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users, and processes to ensure that only authorized access is allowed.",
                     "priority": "critical"
                 },
                 {
-                    "id": "PR.DS-1",
-                    "title": "Data-at-rest protection",
-                    "description": "Data-at-rest is protected with appropriate safeguards.",
+                    "id": "PR.AA-02",
+                    "title": "Access is managed for organizational assets",
+                    "description": "Access to organizational assets is managed through physical and logical controls in accordance with roles and responsibilities.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "PR.AT-01",
+                    "title": "Personnel are provided cybersecurity awareness and training",
+                    "description": "Personnel are provided cybersecurity awareness training and regular updates on changes to threats, vulnerabilities, and organizational responses to maintain awareness and skills.",
                     "priority": "high"
+                },
+                {
+                    "id": "PR.AT-02",
+                    "title": "Specialized training is provided for personnel",
+                    "description": "Specialized training is provided to personnel who manage, operate, or maintain organizational assets on the security of those assets.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PR.DS-01",
+                    "title": "Data-at-rest is protected",
+                    "description": "Data-at-rest is protected with appropriate safeguards, such as encryption, to address the organization's risk strategy.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PR.DS-02",
+                    "title": "Data-in-transit is protected",
+                    "description": "Data-in-transit is protected with appropriate safeguards, such as encryption, during transmission over external networks to address the organization's risk strategy.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PR.DS-03",
+                    "title": "Media containing organizational information is protected",
+                    "description": "Media containing organizational information is protected and disposed of in accordance with the organization's risk strategy.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "PR.DS-04",
+                    "title": "Adequate capacity to ensure availability is maintained",
+                    "description": "Adequate capacity to ensure availability is maintained to address the organization's risk strategy.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "PR.PS-01",
+                    "title": "Processes and procedures are established and implemented",
+                    "description": "Processes and procedures are established and implemented to manage the physical environment such that organizational assets are protected from environmental hazards and unauthorized access.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "PR.PS-02",
+                    "title": "System redundancy is available to support system resiliency",
+                    "description": "System redundancy is available to support organizational resilience in the event of a component failure or cyber attack.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "PR.IR-01",
+                    "title": "Information systems and associated information are protected",
+                    "description": "Information systems and associated information are protected from unauthorized access and other adverse impacts during initial system design and development and throughout the system's lifecycle.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "PR.IR-02",
+                    "title": "Information systems development and deployment are managed",
+                    "description": "The organization manages the development and deployment of organizational information systems and associated information through a formalized process that incorporates security considerations.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PR.IR-03",
+                    "title": "Configuration management is performed",
+                    "description": "Configuration management is performed to ensure that information systems are configured and maintained according to the organization's risk management strategy.",
+                    "priority": "high"
+                },
+                {
+                    "id": "PR.IR-04",
+                    "title": "Information systems and constituent components are managed through their operational life",
+                    "description": "Information systems and constituent components are managed through their operational life to protect the confidentiality, integrity, and availability of organizational information.",
+                    "priority": "high"
+                }
+            ]
+        },
+        {
+            "function_name": "Detect",
+            "function_id": "DE",
+            "description": "The Detect (DE) function encompasses activities to develop and implement appropriate monitoring to detect cybersecurity events on a timely basis.",
+            "controls": [
+                {
+                    "id": "DE.CM-01",
+                    "title": "Networks and network services are monitored to find anomalies",
+                    "description": "Networks and network services are monitored to detect potential cybersecurity events through network traffic analysis and other monitoring techniques.",
+                    "priority": "high"
+                },
+                {
+                    "id": "DE.CM-02",
+                    "title": "Suspicious activity is monitored and analyzed",
+                    "description": "Suspicious activity is monitored and analyzed by personnel or automation in accordance with the organization's risk strategy. This activity is analyzed to determine if the suspicious activity is a cybersecurity event.",
+                    "priority": "high"
+                },
+                {
+                    "id": "DE.CM-03",
+                    "title": "Personnel, devices, and software are monitored",
+                    "description": "Personnel, devices, and software are monitored to ensure that cybersecurity event indicators are detected and acted upon in accordance with the organization's risk management strategy.",
+                    "priority": "high"
+                },
+                {
+                    "id": "DE.CM-04",
+                    "title": "Malicious code is detected",
+                    "description": "Malicious code is detected through automated tools or scanning mechanisms and is managed in accordance with the organization's risk management strategy.",
+                    "priority": "high"
+                },
+                {
+                    "id": "DE.AE-01",
+                    "title": "Cyber threat and vulnerability information is understood",
+                    "description": "Cyber threat intelligence and information regarding cyber vulnerabilities are understood. The organization understands cyber threats, vulnerabilities, and threat-vulnerability pairs relevant to its organizational context.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "DE.AE-02",
+                    "title": "Detection activities are coordinated with other organizations",
+                    "description": "Detection activities are coordinated with internal and external stakeholders and threat information is shared with appropriate parties.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "DE.AE-03",
+                    "title": "Event data is analyzed to support response activities",
+                    "description": "Event data is collected and analyzed to support response activities and to improve detection.",
+                    "priority": "high"
+                },
+                {
+                    "id": "DE.AE-04",
+                    "title": "Detection processes are continuously improved",
+                    "description": "Detection processes are continuously improved through feedback and analysis of cybersecurity events.",
+                    "priority": "medium"
+                }
+            ]
+        },
+        {
+            "function_name": "Respond",
+            "function_id": "RS",
+            "description": "The Respond (RS) function encompasses activities to take action regarding a detected cybersecurity event to stop the attack and mitigate its effects.",
+            "controls": [
+                {
+                    "id": "RS.MA-01",
+                    "title": "Incidents are reported",
+                    "description": "Incidents are reported to appropriate parties within the organization, and externally as required by law or regulation, or with other communities.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.MA-02",
+                    "title": "Incident response processes are executed and managed",
+                    "description": "Incident response processes are executed and managed to ensure response to a cybersecurity incident in a manner consistent with the incident response plan.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "RS.AN-01",
+                    "title": "Incident information is gathered and managed",
+                    "description": "Incident information is gathered, generated, and managed to ensure that a consistent and coordinated response is achieved.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.AN-02",
+                    "title": "The impact of incidents is determined",
+                    "description": "The extent of the cybersecurity incident is determined and documented as an input to the organization's response process.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.AN-03",
+                    "title": "Forensic analysis is performed",
+                    "description": "Forensic analysis, when appropriate, is performed on organizational information and data following a cybersecurity incident.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.CO-01",
+                    "title": "Containment is achieved",
+                    "description": "The organization achieves containment of a cybersecurity incident to stop or reduce the scope and impact of the incident.",
+                    "priority": "critical"
+                },
+                {
+                    "id": "RS.CO-02",
+                    "title": "Incident response is executed and managed",
+                    "description": "Incident response is executed and managed to prevent expansion of the event and to mitigate its effects.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.MI-01",
+                    "title": "Incident remediation is completed",
+                    "description": "Remediation of a cybersecurity incident is completed and verified to ensure that organizational information and assets have been restored or replaced.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.MI-02",
+                    "title": "Identified vulnerabilities are corrected",
+                    "description": "Identified vulnerabilities associated with a cybersecurity incident are corrected through the normal vulnerability management process.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RS.MI-03",
+                    "title": "Incident-related information is communicated",
+                    "description": "Incident-related information is communicated to appropriate parties within the organization and externally as required.",
+                    "priority": "medium"
+                }
+            ]
+        },
+        {
+            "function_name": "Recover",
+            "function_id": "RC",
+            "description": "The Recover (RC) function encompasses activities to restore capabilities or services that were impaired due to a cybersecurity event.",
+            "controls": [
+                {
+                    "id": "RC.RP-01",
+                    "title": "Recovery plan is executed during or after a cybersecurity incident",
+                    "description": "Recovery activities are executed during or after a cybersecurity incident to restore organizational operations to normal levels or as close to normal levels as possible.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RC.RP-02",
+                    "title": "Recovery activities and progress are communicated",
+                    "description": "Recovery activities and progress in restoring capabilities and services are communicated to appropriate parties within the organization and externally as required.",
+                    "priority": "medium"
+                },
+                {
+                    "id": "RC.CO-01",
+                    "title": "Recovery processes are coordinated",
+                    "description": "Recovery processes are coordinated and managed to restore organizational capabilities and services following a cybersecurity incident.",
+                    "priority": "high"
+                },
+                {
+                    "id": "RC.CO-02",
+                    "title": "Resilience is improved based on recovery activities",
+                    "description": "The organization improves its resilience based on lessons learned from the incident recovery process.",
+                    "priority": "medium"
                 }
             ]
         }

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for SimilarityCalculator — math correctness with real numpy arrays.
 
 No mocking is needed here; the tests exercise actual cosine and Euclidean

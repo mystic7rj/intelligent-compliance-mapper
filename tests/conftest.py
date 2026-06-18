@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 """Shared pytest fixtures for security and CLI test modules."""
 
 from __future__ import annotations
 
+import gc
 import shutil
+import sqlite3
 import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
@@ -42,6 +45,10 @@ def db_session() -> Session:
         # Remove scoped session registry to avoid leaked thread-local sessions.
         session_factory.remove()
         # Dispose the engine pool to release all connections.
+        engine.dispose()
+        # Force collection of any lingering sqlite connection wrappers.
+        gc.collect()
+        # Explicitly dispose again as a final idempotent safety call.
         engine.dispose()
 
 
@@ -192,3 +199,5 @@ def auto_cleanup_db(request: pytest.FixtureRequest) -> None:
     finally:
         # Roll back any open transaction state to keep DB interactions isolated.
         session.rollback()
+        # Force cleanup of any remaining sqlite connection objects.
+        gc.collect()

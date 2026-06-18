@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Risk scoring engine for the Compliance Mapper.
 
 Applies a simplified FAIR (Factor Analysis of Information Risk)

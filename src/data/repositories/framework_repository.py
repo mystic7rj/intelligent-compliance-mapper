@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Repository for framework data access.
 
 Provides CRUD operations for ``FrameworkTable`` entities.  All methods
@@ -11,12 +12,19 @@ from __future__ import annotations
 import uuid
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from src.data.schema import FrameworkTable
+from src.data.schema import ControlFamilyTable, FrameworkTable
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+NAME_MAP = {
+    "NIST_CSF": "NIST CSF",
+    "ISO_27001": "ISO 27001",
+    "CIS_V8": "CIS Controls v8",
+    "SOC2": "SOC 2",
+}
 
 
 class FrameworkRepositoryError(Exception):
@@ -39,8 +47,11 @@ class FrameworkRepository:
         Returns:
             A list of ``FrameworkTable`` rows (may be empty).
         """
-        stmt = select(FrameworkTable).order_by(FrameworkTable.name)
-        return list(self._session.execute(stmt).scalars().all())
+        return self._session.execute(
+            select(FrameworkTable)
+            .options(joinedload(FrameworkTable.families).joinedload(ControlFamilyTable.controls))
+            .order_by(FrameworkTable.name)
+        ).unique().scalars().all()
 
     def get_by_name(self, name: str) -> FrameworkTable | None:
         """Look up a framework by its name.
@@ -58,8 +69,14 @@ class FrameworkRepository:
             msg = "Framework name cannot be empty"
             raise FrameworkRepositoryError(msg)
 
-        stmt = select(FrameworkTable).where(FrameworkTable.name == name.strip())
-        return self._session.execute(stmt).scalars().first()
+        cleaned_name = name.strip()
+        mapped_name = NAME_MAP.get(cleaned_name.upper(), cleaned_name)
+        stmt = (
+            select(FrameworkTable)
+            .options(joinedload(FrameworkTable.families).joinedload(ControlFamilyTable.controls))
+            .where(FrameworkTable.name == mapped_name)
+        )
+        return self._session.execute(stmt).unique().scalars().first()
 
     def save(self, framework: FrameworkTable) -> FrameworkTable:
         """Persist a framework row (insert or update).
@@ -82,6 +99,25 @@ class FrameworkRepository:
         if not framework.version or not framework.version.strip():
             msg = "Framework version cannot be empty"
             raise FrameworkRepositoryError(msg)
+
+        cleaned_name = framework.name.strip()
+        cleaned_version = framework.version.strip()
+        framework.name = cleaned_name
+        framework.version = cleaned_version
+
+        existing = self._session.execute(
+            select(FrameworkTable).where(
+                FrameworkTable.name == cleaned_name,
+                FrameworkTable.version == cleaned_version,
+            )
+        ).scalars().first()
+
+        if existing is not None:
+            logger.info(
+                "Framework already exists",
+                extra={"framework_name": existing.name, "framework_version": existing.version},
+            )
+            return existing
 
         self._session.add(framework)
         self._session.flush()

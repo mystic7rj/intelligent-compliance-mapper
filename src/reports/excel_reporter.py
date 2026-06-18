@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Excel report generator using openpyxl.
 
 Produces a professional compliance report as a standalone .xlsx workbook

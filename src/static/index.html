@@ -1,0 +1,844 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Mapper Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #334155;
+        }
+
+        .sidebar h1 {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #f1f5f9;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #334155;
+            border: none;
+            border-radius: 6px;
+            color: #e2e8f0;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .nav-item:hover {
+            background: #475569;
+        }
+
+        .nav-item.active {
+            background: #6366f1;
+            color: #fff;
+        }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #6366f1;
+        }
+
+        .stat-card h3 {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            color: #6366f1;
+            font-weight: 700;
+        }
+
+        .chart-container {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            height: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 10px;
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table thead {
+            background: #334155;
+        }
+
+        .results-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .results-table td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .results-table tbody tr:hover {
+            background: #1e293b;
+        }
+
+        .severity-critical {
+            color: #ef4444;
+        }
+
+        .severity-high {
+            color: #f97316;
+        }
+
+        .severity-medium {
+            color: #eab308;
+        }
+
+        .severity-low {
+            color: #22c55e;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: 100px repeat(3, 80px);
+            gap: 8px;
+            margin-top: 20px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .heatmap-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 600;
+            min-height: 80px;
+            color: #fff;
+        }
+
+        .heatmap-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .low-low {
+            background: #22c55e;
+        }
+
+        .low-medium {
+            background: #84cc16;
+        }
+
+        .low-high {
+            background: #eab308;
+        }
+
+        .medium-low {
+            background: #84cc16;
+        }
+
+        .medium-medium {
+            background: #f97316;
+        }
+
+        .medium-high {
+            background: #f97316;
+        }
+
+        .high-low {
+            background: #eab308;
+        }
+
+        .high-medium {
+            background: #f97316;
+        }
+
+        .high-high {
+            background: #ef4444;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-high {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .badge-medium {
+            background: #eab308;
+            color: #000;
+        }
+
+        .badge-low {
+            background: #6b7280;
+            color: #fff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 0.3s;
+        }
+
+        .error-message {
+            background: #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+        }
+
+        .spinner {
+            border: 4px solid #334155;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .compliance-summary {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .compliance-summary h3 {
+            margin-bottom: 10px;
+            color: #cbd5e1;
+        }
+
+        .coverage-percentage {
+            font-size: 28px;
+            color: #6366f1;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                display: flex;
+                gap: 10px;
+                overflow-x: auto;
+                border-right: none;
+                border-bottom: 1px solid #334155;
+            }
+
+            .sidebar h1 {
+                display: none;
+            }
+
+            .nav-item {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .stat-cards {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .main {
+                padding: 16px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Compliance Mapper</h1>
+            <button class="nav-item active" onclick="switchSection(event, 'dashboard')">Dashboard</button>
+            <button class="nav-item" onclick="switchSection(event, 'gap-analysis')">Gap Analysis</button>
+            <button class="nav-item" onclick="switchSection(event, 'risk-heatmap')">Risk Heatmap</button>
+            <button class="nav-item" onclick="switchSection(event, 'compare')">Compare</button>
+            <button class="nav-item" onclick="switchSection(event, 'reports')">Reports</button>
+        </div>
+
+        <div class="main">
+            <!-- SECTION 1: Dashboard -->
+            <div id="dashboard" class="section active">
+                <h2>Dashboard</h2>
+                <div class="error-message" id="dashboardError"></div>
+                <div class="stat-cards" id="statCards">
+                    <div class="loading">
+                        <span class="spinner"></span>
+                        Loading frameworks...
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="complianceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Gap Analysis -->
+            <div id="gap-analysis" class="section">
+                <h2>Gap Analysis</h2>
+                <div class="error-message" id="gapError"></div>
+                <div class="form-group">
+                    <label for="gapFramework">Framework</label>
+                    <select id="gapFramework">
+                        <option value="NIST_CSF">NIST CSF</option>
+                        <option value="ISO_27001">ISO 27001</option>
+                        <option value="CIS_V8">CIS v8</option>
+                        <option value="SOC2">SOC2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gapControls">Control IDs (one per line)</label>
+                    <textarea id="gapControls" placeholder="GV.OC-01&#10;ID.AM-01&#10;A.5.1"></textarea>
+                </div>
+                <button onclick="runGapAnalysis()">Run Analysis</button>
+
+                <div id="gapResults" style="display: none;">
+                    <div class="compliance-summary">
+                        <h3>Compliance Summary</h3>
+                        <div class="coverage-percentage" id="gapCompliancePercent">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="gapProgressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <table class="results-table" id="gapTable">
+                        <thead>
+                            <tr>
+                                <th>Control ID</th>
+                                <th>Name</th>
+                                <th>Severity</th>
+                                <th>Risk Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gapTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Risk Heatmap -->
+            <div id="risk-heatmap" class="section">
+                <h2>Risk Heatmap</h2>
+                <p style="color: #94a3b8; margin-bottom: 20px;">Run a gap analysis first to generate the heatmap.</p>
+                <div id="heatmapContainer" style="display: none;">
+                    <div class="heatmap" id="heatmapGrid"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Cross-Framework Compare -->
+            <div id="compare" class="section">
+                <h2>Cross-Framework Compare</h2>
+                <div class="error-message" id="compareError"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="sourceFramework">Source Framework</label>
+                        <select id="sourceFramework">
+                            <option value="NIST_CSF">NIST CSF</option>
+                            <option value="ISO_27001">ISO 27001</option>
+                            <option value="CIS_V8">CIS v8</option>
+                            <option value="SOC2">SOC2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="targetFramework">Target Framework</label>
+                        <select id="targetFramework">
+                            <option value="ISO_27001">ISO 27001</option>
+                            <option value="NIST_CSF">NIST CSF</option>
+                            <option value="CIS_V8">CIS v8</option>
+                            <option value="SOC2">SOC2</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="runComparison()">Compare</button>
+
+                <div id="compareResults" style="display: none;">
+                    <div class="compliance-summary">
+                        <h3>Mapping Coverage</h3>
+                        <div class="coverage-percentage" id="mappingCoverage">0%</div>
+                    </div>
+
+                    <table class="results-table" id="compareTable">
+                        <thead>
+                            <tr>
+                                <th>Source Control</th>
+                                <th>Target Control</th>
+                                <th>Similarity</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compareTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 5: Reports -->
+            <div id="reports" class="section">
+                <h2>Reports</h2>
+                <div class="error-message" id="reportsError"></div>
+                <div class="form-group">
+                    <label for="reportFramework">Framework</label>
+                    <select id="reportFramework">
+                        <option value="NIST_CSF">NIST CSF</option>
+                        <option value="ISO_27001">ISO 27001</option>
+                        <option value="CIS_V8">CIS v8</option>
+                        <option value="SOC2">SOC2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reportControls">Control IDs (one per line)</label>
+                    <textarea id="reportControls" placeholder="GV.OC-01&#10;ID.AM-01&#10;A.5.1"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="generateReport('html')">Download HTML</button>
+                    <button onclick="generateReport('excel')">Download Excel</button>
+                    <button onclick="generateReport('pdf')">Download PDF</button>
+                </div>
+                <div id="reportStatus" style="margin-top: 16px; display: none;">
+                    <span class="spinner"></span>
+                    <span id="reportStatusText">Generating report...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Same-origin: the dashboard is served by the FastAPI app itself, so relative
+        // URLs work regardless of host/port and avoid CORS entirely.
+        const API_URL = '';
+
+        function switchSection(evt, sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+        }
+
+        function hideError(elementId) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.classList.remove('show');
+        }
+
+        async function loadDashboard() {
+            hideError('dashboardError');
+            try {
+                const response = await fetch(`${API_URL}/api/frameworks`);
+                if (!response.ok) throw new Error('Failed to fetch frameworks');
+                const frameworks = await response.json();
+
+                const statCards = document.getElementById('statCards');
+                statCards.innerHTML = '';
+
+                // /api/frameworks returns: name, version, total_controls, loaded_at.
+                // Show each framework's control coverage — compliance % needs the user's
+                // implemented controls, which live in the Gap Analysis tab.
+                const chartData = frameworks.map(fw => ({
+                    name: fw.name,
+                    value: fw.total_controls
+                }));
+
+                frameworks.forEach(fw => {
+                    const card = document.createElement('div');
+                    card.className = 'stat-card';
+                    card.innerHTML = `
+                        <h3>${fw.name} <span style="color:#64748b;">v${fw.version}</span></h3>
+                        <div class="value">${fw.total_controls}</div>
+                        <div style="font-size:12px;color:#94a3b8;margin-top:6px;">controls</div>
+                    `;
+                    statCards.appendChild(card);
+                });
+
+                if (!frameworks.length) {
+                    statCards.innerHTML = '<div class="loading">No frameworks loaded.</div>';
+                }
+
+                createComplianceChart(chartData);
+            } catch (error) {
+                showError('dashboardError', error.message);
+            }
+        }
+
+        function createComplianceChart(data) {
+            const ctx = document.getElementById('complianceChart').getContext('2d');
+            if (window.complianceChartInstance) {
+                window.complianceChartInstance.destroy();
+            }
+            window.complianceChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.name),
+                    datasets: [{
+                        label: 'Total controls',
+                        data: data.map(d => d.value),
+                        backgroundColor: '#6366f1',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Controls per framework',
+                            color: '#cbd5e1'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: '#334155' }
+                        },
+                        y: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        async function runGapAnalysis() {
+            hideError('gapError');
+            const framework = document.getElementById('gapFramework').value;
+            const controls = document.getElementById('gapControls').value.split('\n').filter(c => c.trim());
+
+            if (!controls.length) {
+                showError('gapError', 'Please enter at least one control ID');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ framework, controls })
+                });
+
+                if (!response.ok) throw new Error('Analysis failed');
+                const data = await response.json();
+
+                const compliancePercent = Math.round(data.compliance_pct);
+                document.getElementById('gapCompliancePercent').textContent = `${compliancePercent}%`;
+                document.getElementById('gapProgressFill').style.width = `${compliancePercent}%`;
+
+                const tbody = document.getElementById('gapTableBody');
+                tbody.innerHTML = '';
+                data.gaps.forEach(gap => {
+                    const severityClass = `severity-${gap.severity.toLowerCase()}`;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${gap.control_id}</td>
+                        <td>${gap.title}</td>
+                        <td><span class="${severityClass}">${gap.severity}</span></td>
+                        <td>${Math.round(gap.risk_score * 100) / 100}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('gapResults').style.display = 'block';
+
+                // Store heatmap data
+                window.heatmapData = data.gaps;
+                document.getElementById('heatmapContainer').style.display = 'block';
+                generateHeatmap(data.gaps);
+            } catch (error) {
+                showError('gapError', error.message);
+            }
+        }
+
+        // The API returns likelihood/impact as FAIR probabilities (0.0-1.0 floats),
+        // but the heatmap grid is keyed by Low/Medium/High — bucket the float first
+        // or every cell stays at zero.
+        function bucketLevel(value) {
+            if (value < 0.5) return 'Low';
+            if (value < 0.75) return 'Medium';
+            return 'High';
+        }
+
+        function generateHeatmap(gaps) {
+            const heatmap = {};
+            gaps.forEach(gap => {
+                const key = `${bucketLevel(gap.likelihood)}-${bucketLevel(gap.impact)}`;
+                heatmap[key] = (heatmap[key] || 0) + 1;
+            });
+
+            const grid = document.getElementById('heatmapGrid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = '100px repeat(3, 80px)';
+
+            const likelihoods = ['Low', 'Medium', 'High'];
+            const impacts = ['Low', 'Medium', 'High'];
+
+            grid.appendChild(createHeatmapLabel(''));
+            impacts.forEach(impact => {
+                grid.appendChild(createHeatmapLabel(impact));
+            });
+
+            likelihoods.forEach(likelihood => {
+                grid.appendChild(createHeatmapLabel(likelihood));
+                impacts.forEach(impact => {
+                    const count = heatmap[`${likelihood}-${impact}`] || 0;
+                    const cell = document.createElement('div');
+                    const severity = `${likelihood.toLowerCase()}-${impact.toLowerCase()}`;
+                    cell.className = `heatmap-cell ${severity}`;
+                    cell.textContent = count;
+                    grid.appendChild(cell);
+                });
+            });
+        }
+
+        function createHeatmapLabel(text) {
+            const label = document.createElement('div');
+            label.className = 'heatmap-label';
+            label.textContent = text;
+            return label;
+        }
+
+        async function runComparison() {
+            hideError('compareError');
+            const source = document.getElementById('sourceFramework').value;
+            const target = document.getElementById('targetFramework').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/compare`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ source, target })
+                });
+
+                if (!response.ok) throw new Error('Comparison failed');
+                const data = await response.json();
+
+                const coverage = Math.round((data.mapped_controls / data.total_source_controls) * 100);
+                document.getElementById('mappingCoverage').textContent = `${coverage}%`;
+
+                const tbody = document.getElementById('compareTableBody');
+                tbody.innerHTML = '';
+                data.matches.forEach(match => {
+                    const confidenceBadgeClass = `badge-${match.confidence.toLowerCase()}`;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${match.source_control_id}</td>
+                        <td>${match.matched_control_id}</td>
+                        <td>${Math.round(match.similarity_score * 100)}%</td>
+                        <td><span class="badge ${confidenceBadgeClass}">${match.confidence}</span></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('compareResults').style.display = 'block';
+            } catch (error) {
+                showError('compareError', error.message);
+            }
+        }
+
+        async function generateReport(format) {
+            hideError('reportsError');
+            const framework = document.getElementById('reportFramework').value;
+            const controls = document.getElementById('reportControls').value.split('\n').filter(c => c.trim());
+
+            if (!controls.length) {
+                showError('reportsError', 'Please enter at least one control ID');
+                return;
+            }
+
+            const statusEl = document.getElementById('reportStatus');
+            statusEl.style.display = 'block';
+            document.getElementById('reportStatusText').textContent = `Generating ${format.toUpperCase()} report...`;
+
+            try {
+                const response = await fetch(`${API_URL}/api/reports/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ framework, controls, format })
+                });
+
+                if (!response.ok) throw new Error('Report generation failed');
+                const data = await response.json();
+
+                const downloadResponse = await fetch(`${API_URL}/api/reports/download/${data.filename}`);
+                if (!downloadResponse.ok) throw new Error('Download failed');
+
+                const blob = await downloadResponse.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = data.filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                statusEl.style.display = 'none';
+            } catch (error) {
+                showError('reportsError', error.message);
+                statusEl.style.display = 'none';
+            }
+        }
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

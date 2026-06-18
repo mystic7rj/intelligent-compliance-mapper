@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Similarity calculation engine for embedding vectors.
 
 Supports cosine and Euclidean distance metrics.  Returns ranked

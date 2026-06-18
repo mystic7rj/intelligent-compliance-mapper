@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Database engine and session management for the Compliance Mapper.
 
 PATTERN: Configuration from Environment — uses .env for flexible deployment

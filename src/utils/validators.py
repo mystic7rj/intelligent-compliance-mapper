@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Input validation utilities for the Compliance Mapper.
 
 Provides whitelist-based framework name validation, path safety checks,
@@ -14,11 +15,18 @@ logger = get_logger(__name__)
 
 # Whitelist of allowed framework identifiers
 ALLOWED_FRAMEWORKS: frozenset[str] = frozenset(
-    {"nist_csf", "iso27001", "cis_controls", "soc2"}
+    {"NIST_CSF", "ISO_27001", "CIS_V8", "SOC2"}
 )
 
-# Regex pattern for valid control IDs (e.g. "ID.AM-1", "PR.DS-2")
-_CONTROL_ID_PATTERN: re.Pattern[str] = re.compile(r"^[A-Z]{2}\.[A-Z]{2}-\d{1,2}$")
+# Regex pattern for valid control IDs supporting NIST CSF, ISO 27001, CIS v8, and SOC2
+_CONTROL_ID_PATTERN: re.Pattern[str] = re.compile(
+    r"^("
+    r"[A-Z]{2,10}\.[A-Z]{2,4}-\d{1,2}"    # NIST CSF: ID.AM-1, GV.OC-01
+    r"|[A-Z]\.\d{1,2}\.\d{1,2}"            # ISO 27001: A.5.1, A.8.34
+    r"|[A-Z]{2,3}-\d{2}\.\d{2}"            # CIS v8: CIS-01.01, CIS-18.05
+    r"|[A-Z]{1,3}\d{1,2}\.\d{1,2}"         # SOC 2: CC1.1, CC6.8, PI1.5, A1.1
+    r")$"
+)
 
 
 class ValidationError(Exception):
@@ -32,12 +40,12 @@ def validate_framework_name(name: str) -> str:
         name: The framework name to validate.
 
     Returns:
-        The validated framework name (lowercased, stripped).
+        The validated framework name (uppercased, stripped).
 
     Raises:
         ValidationError: If the name is not in the allowed whitelist.
     """
-    cleaned = name.strip().lower()
+    cleaned = name.strip().upper()
 
     if not cleaned:
         logger.warning("Empty framework name provided")
@@ -97,8 +105,11 @@ def validate_file_path(path: str) -> str:
 def validate_control_id(control_id: str) -> str:
     """Validate a control ID matches the expected format.
 
-    Expected format: Two uppercase letters, a dot, two uppercase letters,
-    a hyphen, and one or two digits (e.g. 'ID.AM-1', 'PR.DS-12').
+    Accepts control IDs from four frameworks:
+    - NIST CSF: ID.AM-1, GV.OC-01
+    - ISO 27001: A.5.1, A.8.34
+    - CIS v8: CIS-01.01, CIS-18.05
+    - SOC 2: CC1.1, CC6.8, PI1.5, A1.1
 
     Args:
         control_id: The control ID string to validate.
@@ -122,7 +133,7 @@ def validate_control_id(control_id: str) -> str:
         )
         msg = (
             f"Control ID '{cleaned}' does not match required format. "
-            f"Expected pattern: XX.XX-N (e.g. 'ID.AM-1')"
+            f"Expected format: NIST (ID.AM-1), ISO (A.5.1), CIS (CIS-01.01), or SOC2 (CC6.1)"
         )
         raise ValidationError(msg)
 

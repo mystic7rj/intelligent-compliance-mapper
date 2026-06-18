@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Initial schema — create frameworks, control_families, and controls tables.
 
 Revision ID: 001

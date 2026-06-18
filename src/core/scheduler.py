@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Report scheduler for periodic compliance report generation.
 
 Provides a synchronous, testable scheduler — no real background

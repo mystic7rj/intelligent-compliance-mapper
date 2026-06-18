@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Cross-framework control mapping and analysis.
 
 Uses ML-based control matching to analyze relationships between different
@@ -20,6 +21,26 @@ if TYPE_CHECKING:
     from src.ml.control_matcher import ControlMatcher
 
 logger = get_logger(__name__)
+
+# Framework name mapping for DB lookup (CLI format → display names for ControlRepository)
+DB_NAME_MAP = {
+    "nist_csf": "NIST CSF",
+    "iso_27001": "ISO 27001",
+    "cis_v8": "CIS Controls v8",
+    "soc2": "SOC 2",
+    "NIST_CSF": "NIST CSF",
+    "ISO_27001": "ISO 27001",
+    "CIS_V8": "CIS Controls v8",
+    "SOC2": "SOC 2",
+}
+
+# Framework name mapping for validator (any format → whitelist format for ControlMatcher)
+VALIDATOR_NAME_MAP = {
+    "nist_csf": "NIST_CSF",
+    "iso_27001": "ISO_27001",
+    "cis_v8": "CIS_V8",
+    "soc2": "SOC2",
+}
 
 
 class CrossFrameworkResult(BaseModel):
@@ -114,10 +135,14 @@ class CrossFrameworkAnalyzer:
             logger.error(msg, extra={"source": source, "target": target})
             raise ValidationError(msg) from exc
         
+        # Normalize framework names for control matching
+        source_validator = VALIDATOR_NAME_MAP.get(source, source)
+        target_validator = VALIDATOR_NAME_MAP.get(target, target)
+        
         # Use the matcher to find all control matches
         # This delegates to the ML-based matching logic
         try:
-            matches = self._matcher.match_controls(source, target)
+            matches = self._matcher.match_framework(source_validator, target_validator)
         except Exception as exc:
             msg = f"Control matching failed: {exc}"
             logger.error(msg, extra={"source": source, "target": target})
@@ -136,12 +161,14 @@ class CrossFrameworkAnalyzer:
         
         # Calculate mapping statistics
         total_source_controls = source_meta.control_count
-        unique_mapped = len(set(match.source_control_id for match in matches))
-        unmapped = total_source_controls - unique_mapped
+        # Count unique source controls that have at least one match
+        mapped_control_ids = set(match.source_control_id for match in matches)
+        mapped_controls = len(mapped_control_ids)
+        unmapped_controls = max(0, total_source_controls - mapped_controls)
         
         # Calculate mapping percentage
         if total_source_controls > 0:
-            percentage = (unique_mapped / total_source_controls) * 100.0
+            percentage = (mapped_controls / total_source_controls) * 100.0
         else:
             percentage = 0.0
         
@@ -150,8 +177,8 @@ class CrossFrameworkAnalyzer:
             source_framework=source_meta.name,
             target_framework=target_meta.name,
             total_source_controls=total_source_controls,
-            mapped_controls=unique_mapped,
-            unmapped_controls=unmapped,
+            mapped_controls=mapped_controls,
+            unmapped_controls=unmapped_controls,
             mapping_percentage=round(percentage, 2),
             matches=matches,
         )
@@ -161,7 +188,7 @@ class CrossFrameworkAnalyzer:
             extra={
                 "source": source,
                 "target": target,
-                "mapped": unique_mapped,
+                "mapped": mapped_controls,
                 "total": total_source_controls,
                 "percentage": result.mapping_percentage,
             }

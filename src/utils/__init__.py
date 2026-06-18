@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Utility modules for the Compliance Mapper application."""
 
 from src.utils.logger import get_logger

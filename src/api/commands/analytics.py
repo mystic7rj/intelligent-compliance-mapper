@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Click command group for analytics, maturity, and trend views.
 
 Provides summary, trend, top-risks, and improvement commands with Rich
@@ -81,10 +82,18 @@ def _build_pipeline() -> tuple[AnalyticsEngine, GapAnalyzer, RiskScorer]:
 
     # Create DB-backed analyzer for framework retrieval.
     engine = get_engine()
-    session = get_session(engine)
-    db_session = session.__enter__()
-    repository = FrameworkRepository(db_session)
-    gap_analyzer = GapAnalyzer(repository=repository)
+    session_context = get_session(engine)
+    db_session = None
+
+    try:
+        db_session = session_context.__enter__()
+        repository = FrameworkRepository(db_session)
+        gap_analyzer = GapAnalyzer(repository=repository)
+        setattr(gap_analyzer, "_session_context", session_context)
+    except Exception:
+        if db_session is not None:
+            session_context.__exit__(*sys.exc_info())
+        raise
 
     # Return wired pipeline components.
     return analytics_engine, gap_analyzer, risk_scorer
@@ -92,6 +101,12 @@ def _build_pipeline() -> tuple[AnalyticsEngine, GapAnalyzer, RiskScorer]:
 
 # Safely close session wrapper created by _build_pipeline.
 def _close_pipeline_session(gap_analyzer: GapAnalyzer) -> None:
+    # Exit managed session context when available.
+    session_context = getattr(gap_analyzer, "_session_context", None)
+    if session_context is not None:
+        session_context.__exit__(None, None, None)
+        return
+
     # Read private repository to close underlying session context.
     repository = gap_analyzer._repository  # pyright: ignore[reportPrivateUsage]
 
@@ -135,40 +150,42 @@ def summary(framework: str, controls: str) -> None:
         ]
 
         # Build and run analytics pipeline.
+        gap_analyzer: GapAnalyzer | None = None
         analytics_engine, gap_analyzer, risk_scorer = _build_pipeline()
-        gap_result = gap_analyzer.analyze(framework, control_ids)
-        risk_report = risk_scorer.score(gap_result)
-        summary_result = analytics_engine.summarize(gap_result, risk_report)
+        try:
+            gap_result = gap_analyzer.analyze(framework, control_ids)
+            risk_report = risk_scorer.score(gap_result)
+            summary_result = analytics_engine.summarize(gap_result, risk_report)
 
-        # Record summary into trend tracker.
-        _trend_tracker.record(summary_result)
+            # Record summary into trend tracker.
+            _trend_tracker.record(summary_result)
 
-        # Resolve maturity badge color.
-        maturity_color = _MATURITY_COLORS.get(summary_result.maturity_level, "white")
+            # Resolve maturity badge color.
+            maturity_color = _MATURITY_COLORS.get(summary_result.maturity_level, "white")
 
-        # Render summary as rich panel.
-        console.print(
-            Panel(
-                "\n".join(
-                    [
-                        f"Framework: [bold]{summary_result.framework_name}[/bold]",
-                        f"Compliance: [bold]{summary_result.compliance_percentage:.2f}%[/bold]",
-                        f"Risk Score: [bold]{summary_result.risk_score:.2f}[/bold]",
-                        f"Maturity: [{maturity_color}]● {summary_result.maturity_level}[/{maturity_color}]",
-                        f"Total Controls: {summary_result.total_controls}",
-                        f"Critical Gaps: {summary_result.critical_gaps}",
-                        f"High Gaps: {summary_result.high_gaps}",
-                        f"Medium Gaps: {summary_result.medium_gaps}",
-                        f"Low Gaps: {summary_result.low_gaps}",
-                    ]
-                ),
-                title="📈 Analytics Summary",
-                border_style="cyan",
+            # Render summary as rich panel.
+            console.print(
+                Panel(
+                    "\n".join(
+                        [
+                            f"Framework: [bold]{summary_result.framework_name}[/bold]",
+                            f"Compliance: [bold]{summary_result.compliance_percentage:.2f}%[/bold]",
+                            f"Risk Score: [bold]{summary_result.risk_score:.2f}[/bold]",
+                            f"Maturity: [{maturity_color}]● {summary_result.maturity_level}[/{maturity_color}]",
+                            f"Total Controls: {summary_result.total_controls}",
+                            f"Critical Gaps: {summary_result.critical_gaps}",
+                            f"High Gaps: {summary_result.high_gaps}",
+                            f"Medium Gaps: {summary_result.medium_gaps}",
+                            f"Low Gaps: {summary_result.low_gaps}",
+                        ]
+                    ),
+                    title="📈 Analytics Summary",
+                    border_style="cyan",
+                )
             )
-        )
-
-        # Close pipeline resources after successful execution.
-        _close_pipeline_session(gap_analyzer)
+        finally:
+            if gap_analyzer is not None:
+                _close_pipeline_session(gap_analyzer)
     except Exception as exc:
         # Show all errors as rich error panels.
         _render_error_panel(exc, "❌ Analytics Summary Failed")
@@ -262,37 +279,40 @@ def top_risks(framework: str, controls: str, limit: int) -> None:
         ]
 
         # Build and run scoring pipeline.
+        gap_analyzer: GapAnalyzer | None = None
         analytics_engine, gap_analyzer, risk_scorer = _build_pipeline()
-        gap_result = gap_analyzer.analyze(framework, control_ids)
-        risk_report = risk_scorer.score(gap_result)
-        top_findings = analytics_engine.top_priority_controls(risk_report, limit=limit)
+        try:
+            gap_result = gap_analyzer.analyze(framework, control_ids)
+            risk_report = risk_scorer.score(gap_result)
+            top_findings = analytics_engine.top_priority_controls(risk_report, limit=limit)
 
-        # Create rich table for prioritized findings.
-        table = Table(title=f"Top {max(1, limit)} Risk Findings — {framework}", show_lines=True)
-        table.add_column("Control ID", style="bold")
-        table.add_column("Control Name")
-        table.add_column("Severity")
-        table.add_column("Risk Score", justify="right")
-        table.add_column("Likelihood", justify="right")
-        table.add_column("Impact", justify="right")
+            # Create rich table for prioritized findings.
+            table = Table(title=f"Top {max(1, limit)} Risk Findings — {framework}", show_lines=True)
+            table.add_column("Control ID", style="bold")
+            table.add_column("Control Name")
+            table.add_column("Severity")
+            table.add_column("Risk Score", justify="right")
+            table.add_column("Likelihood", justify="right")
+            table.add_column("Impact", justify="right")
 
-        # Populate rows with colorized severity and score.
-        for finding in top_findings:
-            color = _RISK_COLORS.get(finding.severity, "white")
-            table.add_row(
-                finding.control_id,
-                finding.control_name,
-                f"[{color}]{finding.severity}[/{color}]",
-                f"[{color}]{finding.risk_score:.2f}[/{color}]",
-                f"{finding.likelihood:.2f}",
-                f"{finding.impact:.2f}",
-            )
+            # Populate rows with colorized severity and score.
+            for finding in top_findings:
+                color = _RISK_COLORS.get(finding.severity, "white")
+                table.add_row(
+                    finding.control_id,
+                    finding.control_name,
+                    f"[{color}]{finding.severity}[/{color}]",
+                    f"[{color}]{finding.risk_score:.2f}[/{color}]",
+                    f"{finding.likelihood:.2f}",
+                    f"{finding.impact:.2f}",
+                )
 
-        # Render top risks table.
-        console.print(table)
+            # Render top risks table.
+            console.print(table)
 
-        # Close pipeline resources after successful execution.
-        _close_pipeline_session(gap_analyzer)
+        finally:
+            if gap_analyzer is not None:
+                _close_pipeline_session(gap_analyzer)
     except Exception as exc:
         # Show all errors as rich error panels.
         _render_error_panel(exc, "❌ Top Risks Failed")

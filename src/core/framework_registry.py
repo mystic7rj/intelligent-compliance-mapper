@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Framework registry for managing all supported compliance frameworks.
 
 Provides a single source of truth for framework metadata and loading status.

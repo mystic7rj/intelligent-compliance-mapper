@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Unit tests for the batch processor.
 
 All reporters, GapAnalyzer, and RiskScorer are fully mocked — zero

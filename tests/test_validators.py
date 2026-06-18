@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for input validation utilities."""
 
 from __future__ import annotations
@@ -17,16 +18,16 @@ class TestValidateFrameworkName:
 
     @pytest.mark.parametrize(
         "name",
-        ["nist_csf", "iso27001", "cis_controls", "soc2"],
+        ["NIST_CSF", "ISO_27001", "CIS_V8", "SOC2"],
     )
     def test_valid_framework_names(self, name: str) -> None:
         assert validate_framework_name(name) == name
 
     def test_valid_name_with_whitespace(self) -> None:
-        assert validate_framework_name("  nist_csf  ") == "nist_csf"
+        assert validate_framework_name("  nist_csf  ") == "NIST_CSF"
 
     def test_valid_name_case_insensitive(self) -> None:
-        assert validate_framework_name("NIST_CSF") == "nist_csf"
+        assert validate_framework_name("nist_csf") == "NIST_CSF"
 
     def test_invalid_framework_name(self) -> None:
         with pytest.raises(ValidationError, match="not allowed"):
@@ -46,7 +47,25 @@ class TestValidateControlId:
 
     @pytest.mark.parametrize(
         "control_id",
-        ["ID.AM-1", "PR.AC-1", "PR.DS-12", "DE.CM-3", "RS.RP-1"],
+        [
+            # NIST CSF
+            "ID.AM-1",
+            "PR.AC-1",
+            "PR.DS-12",
+            "DE.CM-3",
+            "RS.RP-1",
+            "IDENTIFY.AM-1",
+            # ISO 27001
+            "A.5.1",
+            "A.8.34",
+            # CIS v8
+            "CIS-01.01",
+            "CIS-18.05",
+            # SOC 2
+            "CC6.1",
+            "PI1.5",
+            "A1.1",
+        ],
     )
     def test_valid_control_ids(self, control_id: str) -> None:
         assert validate_control_id(control_id) == control_id
@@ -63,7 +82,7 @@ class TestValidateControlId:
             "ID.AM-123",
             "I.AM-1",
             "ID.A-1",
-            "IDENTIFY.AM-1",
+            "ABCDEFGHIJK.AM-1",
             "",
         ],
     )

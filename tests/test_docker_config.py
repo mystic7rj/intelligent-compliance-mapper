@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Validation tests for Docker and CI/CD configuration files."""
 
 from __future__ import annotations

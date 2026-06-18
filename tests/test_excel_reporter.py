@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for ExcelReporter — output, sheets, sanitization, path traversal.
 
 Uses ``tmp_path`` pytest fixture for all file I/O.  Mock data classes

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """SQLAlchemy 2.0 ORM models for the Compliance Mapper database.
 
 PATTERN: ORM (Object-Relational Mapping) — maps Python classes to database tables

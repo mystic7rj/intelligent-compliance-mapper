@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Analytics engine for compliance summary and prioritization.
 
 Builds unified analytics summaries from gap and risk outputs and supports

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for maturity model scoring and output guarantees."""
 
 from __future__ import annotations

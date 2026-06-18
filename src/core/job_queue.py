@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """In-memory job queue for batch report processing.
 
 Provides a thread-safe FIFO queue backed by ``collections.deque`` with

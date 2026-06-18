@@ -1,117 +1,208 @@
 {
     "name": "SOC 2",
     "version": "2017",
-    "description": "SOC 2 Trust Service Criteria — AICPA framework for managing customer data based on five trust service principles: security, availability, processing integrity, confidentiality, and privacy.",
+    "description": "SOC 2 Trust Services Criteria 2017 — AICPA Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy. Used by service organizations to demonstrate controls over systems that store, process, or transmit customer data.",
     "families": [
         {
-            "function_name": "Logical and Physical Access Controls",
-            "function_id": "CC",
-            "description": "CC6 — Common Criteria for logical and physical access to systems, data, and facilities.",
+            "function_name": "Common Criteria - Control Environment",
+            "function_id": "CC1",
+            "description": "The criteria relevant to how the entity demonstrates a commitment to integrity and ethical values, exercises oversight responsibility, establishes structure, authority and responsibility, demonstrates commitment to competence, and enforces accountability.",
             "controls": [
-                {
-                    "id": "LA.PA-1",
-                    "title": "Logical and Physical Access Controls",
-                    "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to meet the entity's objectives.",
-                    "priority": "critical"
-                },
-                {
-                    "id": "LA.NU-1",
-                    "title": "Authorization of New Users",
-                    "description": "Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal and external users whose access is administered by the entity.",
-                    "priority": "critical"
-                },
-                {
-                    "id": "LA.UA-1",
-                    "title": "User Authentication",
-                    "description": "The entity requires identification and authentication of users prior to granting access to system resources and data.",
-                    "priority": "critical"
-                },
-                {
-                    "id": "LA.AR-1",
-                    "title": "Access Removal and Modification",
-                    "description": "The entity removes or modifies access of users whose role or employment has changed or has been terminated.",
-                    "priority": "high"
-                },
-                {
-                    "id": "LA.PR-1",
-                    "title": "Privileged User Access Review",
-                    "description": "The entity grants access to data, system resources, infrastructure, and system configurations based on job responsibilities with the least privilege principle and segregation of duties where applicable.",
-                    "priority": "high"
-                },
-                {
-                    "id": "LA.PH-1",
-                    "title": "Physical Access Controls",
-                    "description": "The entity implements physical access controls to limit access to hardware and computing infrastructure based on authorized roles.",
-                    "priority": "high"
-                }
+                {"id": "CC1.1", "title": "COSO Principle 1: Demonstrates Commitment to Integrity and Ethical Values", "description": "The entity demonstrates a commitment to integrity and ethical values. Management establishes expectations of conduct, evaluates adherence to standards of conduct, and addresses deviations in a timely manner.", "priority": "high"},
+                {"id": "CC1.2", "title": "COSO Principle 2: Exercises Oversight Responsibility", "description": "The board of directors demonstrates independence from management and exercises oversight of the development and performance of internal control. The board establishes oversight responsibilities and applies relevant expertise.", "priority": "high"},
+                {"id": "CC1.3", "title": "COSO Principle 3: Establishes Structure, Authority and Responsibility", "description": "Management establishes, with board oversight, structures, reporting lines, and appropriate authorities and responsibilities in the pursuit of objectives. Organizational structures are established to enable the achievement of objectives.", "priority": "high"},
+                {"id": "CC1.4", "title": "COSO Principle 4: Demonstrates Commitment to Competence", "description": "The entity demonstrates a commitment to attract, develop, and retain competent individuals in alignment with objectives. Policies and practices reflect expectations of competence necessary to support the achievement of objectives.", "priority": "medium"},
+                {"id": "CC1.5", "title": "COSO Principle 5: Enforces Accountability", "description": "The entity holds individuals accountable for their internal control responsibilities in the pursuit of objectives. Mechanisms to communicate and hold individuals accountable are established throughout the entity.", "priority": "high"}
             ]
         },
         {
-            "function_name": "System Operations",
-            "function_id": "C7",
-            "description": "CC7 — Common Criteria for system operations including monitoring, incident response, and capacity management.",
+            "function_name": "Common Criteria - Communication and Information",
+            "function_id": "CC2",
+            "description": "The criteria relevant to how the entity obtains or generates and uses relevant, quality information to support the functioning of internal control, and communicates information internally and externally.",
             "controls": [
-                {
-                    "id": "SO.DM-1",
-                    "title": "Detection and Monitoring of Security Events",
-                    "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify anomalies, security events, and threats.",
-                    "priority": "high"
-                },
-                {
-                    "id": "SO.RS-1",
-                    "title": "Response to Security Incidents",
-                    "description": "The entity responds to identified security incidents by executing a defined incident response program to understand, contain, remediate, and communicate security incidents, as appropriate.",
-                    "priority": "critical"
-                },
-                {
-                    "id": "SO.EM-1",
-                    "title": "Evaluation and Management of Changes",
-                    "description": "The entity identifies, develops, and implements activities to manage changes to system components and their related processes.",
-                    "priority": "high"
-                },
-                {
-                    "id": "SO.CM-1",
-                    "title": "Capacity Management and Performance",
-                    "description": "The entity monitors the capacity and performance of operating systems, databases, and other system components to meet its objectives.",
-                    "priority": "medium"
-                },
-                {
-                    "id": "SO.BR-1",
-                    "title": "System Backup and Recovery",
-                    "description": "The entity maintains backup and recovery procedures to meet its objectives.",
-                    "priority": "critical"
-                }
+                {"id": "CC2.1", "title": "COSO Principle 13: Uses Relevant Information", "description": "The entity obtains or generates and uses relevant, quality information to support the functioning of internal control. Information requirements are identified and data sources are established to meet those requirements.", "priority": "high"},
+                {"id": "CC2.2", "title": "COSO Principle 14: Communicates Internally", "description": "The entity internally communicates information, including objectives and responsibilities for internal control, necessary to support the functioning of internal control. Communication occurs across all levels of the entity.", "priority": "high"},
+                {"id": "CC2.3", "title": "COSO Principle 15: Communicates Externally", "description": "The entity communicates with external parties regarding matters affecting the functioning of internal control. External communications include information on privacy practices, system availability commitments, and security policies.", "priority": "high"}
             ]
         },
         {
-            "function_name": "Change Management",
-            "function_id": "C8",
-            "description": "CC8 — Common Criteria for managing changes to systems and infrastructure.",
+            "function_name": "Common Criteria - Risk Assessment",
+            "function_id": "CC3",
+            "description": "The criteria relevant to how the entity specifies suitable objectives, identifies and analyzes risk, assesses fraud risk, and identifies and assesses changes that could significantly impact internal control.",
             "controls": [
-                {
-                    "id": "CM.PR-1",
-                    "title": "Change Management Program",
-                    "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its objectives.",
-                    "priority": "high"
-                },
-                {
-                    "id": "CM.AA-1",
-                    "title": "Change Authorization and Approval",
-                    "description": "Changes are authorized, tested, approved, and communicated prior to implementation.",
-                    "priority": "high"
-                },
-                {
-                    "id": "CM.EP-1",
-                    "title": "Emergency Change Procedures",
-                    "description": "The entity implements emergency change procedures that are documented and approved by management to respond to urgent system issues.",
-                    "priority": "medium"
-                },
-                {
-                    "id": "CM.DA-1",
-                    "title": "Development and Acquisition Standards",
-                    "description": "The entity follows defined system development life cycle standards that address security and availability requirements throughout the development process.",
-                    "priority": "high"
-                }
+                {"id": "CC3.1", "title": "COSO Principle 6: Specifies Suitable Objectives", "description": "The entity specifies objectives with sufficient clarity to enable the identification and assessment of risks relating to objectives. Operations objectives reflect management's choices, external requirements, and risk appetite.", "priority": "high"},
+                {"id": "CC3.2", "title": "COSO Principle 7: Identifies and Analyzes Risk", "description": "The entity identifies risks to the achievement of its objectives across the entity and analyzes risks as a basis for determining how the risks should be managed. Risk identification considers internal and external factors.", "priority": "high"},
+                {"id": "CC3.3", "title": "COSO Principle 8: Assesses Fraud Risk", "description": "The entity considers the potential for fraud in assessing risks to the achievement of objectives. Various types of fraud including fraudulent reporting, loss of assets, and corruption are considered.", "priority": "high"},
+                {"id": "CC3.4", "title": "COSO Principle 9: Identifies and Analyzes Significant Change", "description": "The entity identifies and assesses changes that could significantly impact the system of internal control. Changes in the external environment, business model, and leadership are assessed for their impact.", "priority": "medium"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - Monitoring Activities",
+            "function_id": "CC4",
+            "description": "The criteria relevant to how the entity selects, develops, and performs ongoing and separate evaluations to ascertain whether the components of internal control are present and functioning.",
+            "controls": [
+                {"id": "CC4.1", "title": "COSO Principle 16: Conducts Ongoing or Separate Evaluations", "description": "The entity selects, develops, and performs ongoing and/or separate evaluations to ascertain whether the components of internal control are present and functioning. Ongoing evaluations are built into business processes and provide timely information.", "priority": "high"},
+                {"id": "CC4.2", "title": "COSO Principle 17: Evaluates and Communicates Deficiencies", "description": "The entity evaluates and communicates internal control deficiencies in a timely manner to those parties responsible for taking corrective action, including senior management and the board of directors, as appropriate.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - Control Activities",
+            "function_id": "CC5",
+            "description": "The criteria relevant to how the entity selects and develops control activities, selects and develops general controls over technology, and deploys through policies and procedures.",
+            "controls": [
+                {"id": "CC5.1", "title": "COSO Principle 10: Selects and Develops Control Activities", "description": "The entity selects and develops control activities that contribute to the mitigation of risks to the achievement of objectives to acceptable levels. Control activities address identified risks and are selected based on risk assessment.", "priority": "high"},
+                {"id": "CC5.2", "title": "COSO Principle 11: Selects and Develops General Controls Over Technology", "description": "The entity selects and develops general control activities over technology to support the achievement of objectives. Technology controls include logical access controls, infrastructure controls, and software development controls.", "priority": "critical"},
+                {"id": "CC5.3", "title": "COSO Principle 12: Deploys Through Policies and Procedures", "description": "The entity deploys control activities through policies that establish what is expected and in procedures that put policies into action. Policies and procedures are established, communicated, and maintained.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - Logical and Physical Access Controls",
+            "function_id": "CC6",
+            "description": "The criteria relevant to how the entity implements logical access security software, infrastructure, and architectures and manages logical and physical access to data, software, functions, and other system resources.",
+            "controls": [
+                {"id": "CC6.1", "title": "Logical Access Security Measures", "description": "The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to meet the entity's objectives. Access controls restrict access to authorized users.", "priority": "critical"},
+                {"id": "CC6.2", "title": "New Internal Users Access Registration and Authorization", "description": "Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal users whose access is administered by the entity. Registration includes identity verification and management approval.", "priority": "critical"},
+                {"id": "CC6.3", "title": "New External Users Access Registration and Authorization", "description": "The entity authorizes, modifies, or removes access to data, software, functions, and other protected information assets based on approved requests from entity or customer authorized administrative users.", "priority": "critical"},
+                {"id": "CC6.4", "title": "Physical Access Restrictions", "description": "The entity restricts physical access to facilities and protected information assets, such as data center facilities, backup media storage, and other sensitive locations, to authorized personnel to meet the entity's objectives.", "priority": "high"},
+                {"id": "CC6.5", "title": "Logical Access Removed Upon Termination", "description": "The entity discontinues logical and physical protections over physical assets only after the ability to read or modify information during the normal course of operations is removed and the entity determines that the information is no longer needed.", "priority": "critical"},
+                {"id": "CC6.6", "title": "Logical Access Security Measures for External Access", "description": "The entity implements logical access security measures to protect against threats from sources outside its system boundaries. Firewalls, network segmentation, and other controls protect against external threats.", "priority": "critical"},
+                {"id": "CC6.7", "title": "Transmission Integrity and Confidentiality Controls", "description": "The entity restricts the transmission, movement, and removal of information to authorized internal and external users and processes, and protects it during transmission, movement, or removal to meet the entity's objectives.", "priority": "critical"},
+                {"id": "CC6.8", "title": "Malicious Software Prevention Controls", "description": "The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software to meet the entity's objectives. Anti-malware, application whitelisting, and security monitoring support this criterion.", "priority": "critical"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - System Operations",
+            "function_id": "CC7",
+            "description": "The criteria relevant to how the entity detects and monitors for new vulnerabilities, evaluates the significance of and responds to identified security events, and recovers from security incidents.",
+            "controls": [
+                {"id": "CC7.1", "title": "Vulnerability Management", "description": "To meet its objectives, the entity uses detection and monitoring procedures to identify changes to configurations or the introduction of new vulnerabilities and to take action to address identified vulnerabilities.", "priority": "critical"},
+                {"id": "CC7.2", "title": "Security Incident Monitoring and Evaluation", "description": "The entity monitors system components and the operation of those controls on an ongoing basis to detect potential security events and to evaluate the effectiveness of the security controls in place.", "priority": "critical"},
+                {"id": "CC7.3", "title": "Security Event Evaluation and Response", "description": "The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives and, if so, takes actions to prevent or address such failures.", "priority": "critical"},
+                {"id": "CC7.4", "title": "Security Incident Response", "description": "The entity responds to identified security incidents by executing a defined incident response program to understand, contain, remediate, and communicate security incidents, as appropriate.", "priority": "critical"},
+                {"id": "CC7.5", "title": "Recovery from Security Incidents", "description": "The entity identifies, develops, and implements activities to recover from identified security incidents and communicates information about the incident and recovery actions to appropriate parties.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - Change Management",
+            "function_id": "CC8",
+            "description": "The criteria relevant to how the entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures.",
+            "controls": [
+                {"id": "CC8.1", "title": "Change Management Controls", "description": "The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its change management objectives. Changes are tracked, approved, and tested before deployment.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Common Criteria - Risk Mitigation",
+            "function_id": "CC9",
+            "description": "The criteria relevant to how the entity identifies, selects, and develops risk mitigation activities for risks arising from potential business disruptions and the use of vendors and business partners.",
+            "controls": [
+                {"id": "CC9.1", "title": "Risk Mitigation Activities", "description": "The entity identifies, selects, and develops risk mitigation activities for risks arising from potential business disruptions. Business continuity plans and disaster recovery procedures are developed and maintained.", "priority": "high"},
+                {"id": "CC9.2", "title": "Vendor and Business Partner Risk Management", "description": "The entity assesses and manages risks associated with vendors and business partners. Vendor agreements include security requirements and vendor performance is monitored against those requirements.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Availability",
+            "function_id": "A1",
+            "description": "The criteria relevant to whether the system is available for operation and use as committed or agreed. Availability addresses the accessibility of the system, products, or services as specified in agreements.",
+            "controls": [
+                {"id": "A1.1", "title": "Capacity Management", "description": "The entity maintains, monitors, and evaluates current processing capacity and use of system components, including the ability to expand capacity as needed, to manage capacity demand and to enable the implementation of additional capacity to help meet its objectives.", "priority": "high"},
+                {"id": "A1.2", "title": "Environmental Threat Protection", "description": "The entity authorizes, designs, develops or acquires, implements, operates, approves, maintains, and monitors environmental protections, software, data back-up processes, and recovery infrastructure to meet its availability commitments and system requirements.", "priority": "high"},
+                {"id": "A1.3", "title": "Recovery Plan Testing", "description": "The entity tests recovery plan procedures supporting system recovery to meet its availability commitments and system requirements. Recovery testing validates that backup procedures and disaster recovery plans work as expected.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Processing Integrity",
+            "function_id": "PI1",
+            "description": "The criteria relevant to whether system processing is complete, valid, accurate, timely, and authorized to meet the entity's objectives.",
+            "controls": [
+                {"id": "PI1.1", "title": "Processing Completeness and Accuracy", "description": "The entity obtains or generates, uses, and communicates relevant, quality information regarding the objectives related to processing, including definitions of data processed and product and service specifications, to support the use of products and services.", "priority": "high"},
+                {"id": "PI1.2", "title": "System Input Processing Controls", "description": "The entity implements policies and procedures over system inputs, including controls over completeness and accuracy, to result in products, services, and reporting to meet the entity's objectives.", "priority": "high"},
+                {"id": "PI1.3", "title": "System Processing Controls", "description": "The entity implements policies and procedures over system processing to result in products, services, and reporting to meet the entity's objectives. Processing controls include edit checks, balancing procedures, and reconciliations.", "priority": "high"},
+                {"id": "PI1.4", "title": "System Output Processing Controls", "description": "The entity implements policies and procedures to make available or deliver output completely, accurately, and timely in accordance with specifications to meet the entity's objectives.", "priority": "medium"},
+                {"id": "PI1.5", "title": "System Input, Processing, and Output Storage Controls", "description": "The entity implements policies and procedures to store inputs, items in processing, and outputs completely, accurately, and timely in accordance with system specifications to meet the entity's objectives.", "priority": "medium"}
+            ]
+        },
+        {
+            "function_name": "Confidentiality",
+            "function_id": "C1",
+            "description": "The criteria relevant to how the entity identifies and maintains confidential information to meet the entity's objectives related to confidentiality.",
+            "controls": [
+                {"id": "C1.1", "title": "Confidential Information Identification and Classification", "description": "The entity identifies and maintains confidential information to meet the entity's objectives related to confidentiality. Confidential information is identified at creation or upon receipt and managed throughout its life cycle.", "priority": "high"},
+                {"id": "C1.2", "title": "Confidential Information Disposal", "description": "The entity disposes of confidential information to meet the entity's objectives related to confidentiality. Disposal procedures ensure confidential information is destroyed or rendered unreadable when no longer needed.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Notice and Communication of Objectives",
+            "function_id": "P1",
+            "description": "The entity provides notice to data subjects about its privacy practices to meet the entity's objectives related to privacy.",
+            "controls": [
+                {"id": "P1.1", "title": "Privacy Notice", "description": "The entity provides notice to data subjects about its privacy practices to meet the entity's objectives related to privacy. The notice is available before or at the time of collection of personal information.", "priority": "high"},
+                {"id": "P1.2", "title": "Privacy Notice Updates", "description": "The entity provides notice to data subjects about changes to its privacy practices to meet the entity's objectives related to privacy. Data subjects are notified when privacy practices change in a material way.", "priority": "medium"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Choice and Consent",
+            "function_id": "P2",
+            "description": "The entity communicates choices available regarding the collection, use, retention, disclosure, and disposal of personal information to the data subjects and obtains implicit or explicit consent.",
+            "controls": [
+                {"id": "P2.1", "title": "Data Subject Consent", "description": "The entity communicates choices available regarding the collection, use, retention, disclosure, and disposal of personal information to the data subjects and obtains implicit or explicit consent, including a process for individuals to opt out of the use of their personal information for secondary purposes.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Collection",
+            "function_id": "P3",
+            "description": "The entity collects personal information only for the purposes identified in the notice.",
+            "controls": [
+                {"id": "P3.1", "title": "Personal Information Collection Limitation", "description": "Personal information is collected consistent with the entity's objectives related to privacy. Collection is limited to what is adequate, relevant, and limited to what is necessary in relation to the purposes for which data are processed.", "priority": "high"},
+                {"id": "P3.2", "title": "Explicit Consent for Sensitive Information", "description": "For information requiring explicit consent, the entity communicates the need for such consent, as well as the consequences of a failure to provide consent for the request for personal information, and obtains the consent prior to the collection of the information.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Use, Retention, and Disposal",
+            "function_id": "P4",
+            "description": "The entity limits the use of personal information to the purposes identified in the notice and for which consent was obtained.",
+            "controls": [
+                {"id": "P4.1", "title": "Personal Information Use Limitation", "description": "The entity limits the use of personal information to the purposes identified in the notice and for which consent was obtained. Personal information is not used for purposes other than those specified.", "priority": "high"},
+                {"id": "P4.2", "title": "Personal Information Retention", "description": "The entity retains personal information consistent with the entity's objectives related to privacy. Retention periods are defined and personal information is deleted when it is no longer needed.", "priority": "high"},
+                {"id": "P4.3", "title": "Personal Information Disposal", "description": "The entity disposes of personal information consistent with the entity's objectives related to privacy. Disposal procedures ensure personal information is destroyed or de-identified when no longer needed.", "priority": "high"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Access",
+            "function_id": "P5",
+            "description": "The entity grants identified and authenticated data subjects the ability to access their stored personal information for review and, upon request, provides physical or electronic copies of that information.",
+            "controls": [
+                {"id": "P5.1", "title": "Data Subject Access Request Process", "description": "The entity grants identified and authenticated data subjects the ability to access their stored personal information for review and, upon request, provides physical or electronic copies of that information to data subjects to meet the entity's objectives related to privacy.", "priority": "high"},
+                {"id": "P5.2", "title": "Data Subject Correction Request Process", "description": "The entity corrects, amends, or appends personal information based on information provided by data subjects and communicates such information to third parties as committed or required to meet the entity's objectives related to privacy.", "priority": "medium"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Disclosure and Notification",
+            "function_id": "P6",
+            "description": "The entity discloses personal information to third parties with the consent of the data subjects, and such disclosures are consistent with the terms of the privacy notice.",
+            "controls": [
+                {"id": "P6.1", "title": "Third Party Disclosure Limitation", "description": "The entity discloses personal information to third parties with the consent of data subjects, and such disclosures are consistent with the terms of the entity's privacy notice to meet the entity's objectives related to privacy.", "priority": "high"},
+                {"id": "P6.2", "title": "Third Party Disclosure Records", "description": "The entity creates and retains a complete, accurate, and timely record of authorized disclosures of personal information to meet the entity's objectives related to privacy.", "priority": "medium"},
+                {"id": "P6.3", "title": "Privacy Breach Notification", "description": "The entity provides notification of breaches and incidents to affected data subjects, regulators, and others to meet the entity's objectives related to privacy. Notification includes information about the breach and guidance for affected parties.", "priority": "critical"},
+                {"id": "P6.4", "title": "Third Party Disclosure Agreements", "description": "The entity obtains privacy commitments from vendors and other third parties who have access to personal information to meet the entity's objectives related to privacy. Third party agreements include privacy and security requirements.", "priority": "high"},
+                {"id": "P6.5", "title": "Third Party Compliance Enforcement", "description": "The entity obtains commitments from vendors and other third parties with access to personal information to notify the entity in the event of actual or suspected unauthorized disclosures of personal information.", "priority": "high"},
+                {"id": "P6.6", "title": "Unauthorized Disclosure Remediation", "description": "The entity obtains commitments from vendors and other third parties with access to personal information to remediate identified deficiencies in their privacy and security practices within an agreed-upon timeframe.", "priority": "high"},
+                {"id": "P6.7", "title": "Data Subject Notification of Disclosure", "description": "The entity provides notification of breaches and incidents to affected data subjects to meet the entity's objectives related to privacy. Notification occurs within timeframes required by applicable regulations.", "priority": "critical"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Quality",
+            "function_id": "P7",
+            "description": "The entity collects and maintains accurate, up-to-date, complete, and relevant personal information to meet the entity's objectives related to privacy.",
+            "controls": [
+                {"id": "P7.1", "title": "Personal Information Quality and Accuracy", "description": "The entity collects and maintains accurate, up-to-date, complete, and relevant personal information to meet the entity's objectives related to privacy. Processes are in place to ensure personal information quality.", "priority": "medium"}
+            ]
+        },
+        {
+            "function_name": "Privacy - Monitoring and Enforcement",
+            "function_id": "P8",
+            "description": "The entity monitors compliance with its privacy objectives and addresses privacy-related inquiries, complaints, and disputes.",
+            "controls": [
+                {"id": "P8.1", "title": "Privacy Compliance Monitoring", "description": "The entity monitors compliance with its privacy objectives and addresses privacy-related inquiries, complaints, and disputes to meet the entity's objectives related to privacy. A privacy compliance program is established and maintained.", "priority": "high"}
             ]
         }
     ]

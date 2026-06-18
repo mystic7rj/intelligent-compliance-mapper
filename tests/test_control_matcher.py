@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for ControlMatcher — matching, confidence, validation, coverage.
 
 EmbeddingGenerator, SimilarityCalculator, and repositories are fully mocked

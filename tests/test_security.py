@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the security module — safe_path traversal protection."""
 
 from __future__ import annotations

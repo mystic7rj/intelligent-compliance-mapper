@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Data layer for the Compliance Mapper — ORM models, engine, and repositories."""
 
 from __future__ import annotations

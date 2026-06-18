@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Sentence-transformer embedding generator for compliance control texts.
 
 Wraps ``sentence_transformers.SentenceTransformer`` behind a thin interface

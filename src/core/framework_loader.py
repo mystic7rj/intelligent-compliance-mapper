@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Factory-pattern framework loader for the Compliance Mapper.
 
 Loads compliance framework definitions from JSON files in the data directory.
@@ -35,15 +36,17 @@ class FrameworkLoader:
     access is routed through ``safe_path()`` to prevent path traversal.
 
     Args:
-        base_dir: Root directory containing the ``frameworks/`` subdirectory.
+        base_dir: Either the project data directory (containing ``frameworks/``)
+            or the frameworks directory itself.
     """
 
     def __init__(self, base_dir: Path) -> None:
-        self._base_dir = base_dir
-        self._frameworks_dir = base_dir / "frameworks"
+        frameworks_subdir = base_dir / "frameworks"
+        self._frameworks_dir = frameworks_subdir if frameworks_subdir.is_dir() else base_dir
+        self._base_dir = self._frameworks_dir
         logger.info(
             "FrameworkLoader initialized",
-            extra={"base_dir": str(base_dir)},
+            extra={"base_dir": str(self._frameworks_dir)},
         )
 
     def load(self, framework_name: str) -> Framework:
@@ -70,8 +73,9 @@ class FrameworkLoader:
         validated_name = validate_framework_name(framework_name)
 
         # Step 2: Build and validate the file path
-        # Construct path to the framework JSON file
-        relative_path = f"frameworks/{validated_name}.json"
+        # Construct path to the framework JSON file.
+        # Framework filenames are lowercase on disk (e.g. nist_csf.json).
+        relative_path = f"{validated_name.lower()}.json"
 
         try:
             # SECURITY: safe_path() prevents directory traversal attacks

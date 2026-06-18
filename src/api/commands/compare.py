@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """CLI commands for cross-framework comparison and analysis.
 
 Provides commands to compare frameworks, analyze all pairs, and generate
@@ -17,11 +18,12 @@ from rich.table import Table
 from src.core.cross_framework_analyzer import CrossFrameworkAnalyzer
 from src.core.framework_registry import SUPPORTED_FRAMEWORKS, FrameworkRegistry
 from src.core.framework_loader import FrameworkLoader
-from src.data.database import get_session
+from src.data.database import get_engine, get_session
+from src.data.repositories.control_repository import ControlRepository
 from src.data.repositories.framework_repository import FrameworkRepository
 from src.ml.control_matcher import ControlMatcher
 from src.ml.embeddings import EmbeddingConfig, EmbeddingGenerator
-from src.ml.similarity import SimilarityCalculator
+from src.ml.similarity import SimilarityCalculator, SimilarityConfig
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -71,17 +73,19 @@ def frameworks_command(source: str, target: str, output_format: str) -> None:
         
         # Set up ML components with explicit embedding configuration.
         embedding_gen = EmbeddingGenerator(config=EmbeddingConfig())
-        similarity_calc = SimilarityCalculator()
+        similarity_calc = SimilarityCalculator(config=SimilarityConfig(threshold=0.3, top_k=5))
         
         # Get database session and repositories
-        with get_session() as session:
+        engine = get_engine()
+        with get_session(engine) as session:
             framework_repo = FrameworkRepository(session)
+            control_repo = ControlRepository(session)
             
             # Initialize control matcher
             matcher = ControlMatcher(
                 embedding_generator=embedding_gen,
                 similarity_calculator=similarity_calc,
-                control_repository=None,  # Will be injected at runtime
+                control_repository=control_repo,
                 framework_repository=framework_repo,
             )
             
@@ -153,26 +157,26 @@ def all_pairs_command(output_format: str) -> None:
         data_dir = Path("data")
         registry = FrameworkRegistry(data_dir)
         
-        # Set up ML components with explicit embedding configuration.
+         # Set up ML components with explicit embedding configuration.
         embedding_gen = EmbeddingGenerator(config=EmbeddingConfig())
-        similarity_calc = SimilarityCalculator()
+        similarity_calc = SimilarityCalculator(config=SimilarityConfig(threshold=0.3, top_k=5))
         
         # Get database session and repositories
-        with get_session() as session:
+        engine = get_engine()
+        with get_session(engine) as session:
             framework_repo = FrameworkRepository(session)
+            control_repo = ControlRepository(session)
             
             # Initialize control matcher
             matcher = ControlMatcher(
                 embedding_generator=embedding_gen,
                 similarity_calculator=similarity_calc,
-                control_repository=None,
+                control_repository=control_repo,
                 framework_repository=framework_repo,
             )
-            
             # Initialize analyzer
             analyzer = CrossFrameworkAnalyzer(matcher, registry)
-            
-            # Run analysis for all pairs
+
             console.print("\n[cyan]Analyzing all framework pairs...[/cyan]\n")
             results = analyzer.analyze_all_pairs()
             
@@ -238,24 +242,24 @@ def equivalence_command(source: str, target: str) -> None:
         
         # Set up ML components with explicit embedding configuration.
         embedding_gen = EmbeddingGenerator(config=EmbeddingConfig())
-        similarity_calc = SimilarityCalculator()
+        similarity_calc = SimilarityCalculator(config=SimilarityConfig(threshold=0.3, top_k=5))
         
         # Get database session and repositories
-        with get_session() as session:
+        engine = get_engine()
+        with get_session(engine) as session:
             framework_repo = FrameworkRepository(session)
+            control_repo = ControlRepository(session)
             
             # Initialize control matcher
             matcher = ControlMatcher(
                 embedding_generator=embedding_gen,
                 similarity_calculator=similarity_calc,
-                control_repository=None,
+                control_repository=control_repo,
                 framework_repository=framework_repo,
             )
-            
             # Initialize analyzer
             analyzer = CrossFrameworkAnalyzer(matcher, registry)
-            
-            # Get equivalence map
+
             console.print(f"\n[cyan]Building equivalence map for {source} → {target}...[/cyan]\n")
             equivalence_map = analyzer.get_equivalence_map(source, target)
             

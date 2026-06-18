@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for PDFReporter — output, sanitization, path traversal, errors.
 
 Uses ``tmp_path`` pytest fixture for all file I/O.  Mock data classes

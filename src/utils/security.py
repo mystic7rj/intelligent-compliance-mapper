@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Security utilities for safe file system access.
 
 SECURITY: Path Traversal Protection — prevents directory traversal attacks

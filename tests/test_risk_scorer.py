@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the RiskScorer — scoring, classification, and edge cases.
 
 Uses hand-crafted ``GapAnalysisResult`` objects — no database or

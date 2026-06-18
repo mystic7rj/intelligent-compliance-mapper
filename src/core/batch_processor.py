@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Batch processor for report generation.
 
 Receives all dependencies via constructor injection — never imports

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Reports package — HTML, Excel, and PDF report generation.
 
 Exports the abstract ``BaseReporter`` and the concrete reporters:

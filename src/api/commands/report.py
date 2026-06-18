@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Click command group for report generation.
 
 Orchestrates the full analyze → risk-score pipeline and writes
@@ -83,6 +84,7 @@ def report() -> None:
 )
 @click.option(
     "--output-dir",
+    "--output",
     default="./output",
     show_default=True,
     help="Directory to write the report file to.",

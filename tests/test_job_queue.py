@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Unit tests for the in-memory job queue.
 
 Covers enqueue/dequeue ordering, status management, and thread safety.

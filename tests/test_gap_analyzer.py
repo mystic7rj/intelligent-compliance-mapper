@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the GapAnalyzer — validation, gap detection, and error handling.
 
 Uses a lightweight mock repository backed by simple data classes — no real

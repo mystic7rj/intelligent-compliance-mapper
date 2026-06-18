@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Click command group for compliance gap analysis.
 
 Orchestrates GapAnalyzer and RiskScorer — contains zero business logic.

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """HTML report generator using Jinja2 templates.
 
 Renders a professional compliance report as a standalone HTML file.
