@@ -350,7 +350,6 @@ async def compare_frameworks(
                 "target_control_id": match.matched_control_id,
                 "similarity_score": match.similarity_score,
                 "confidence": match.confidence,
-                "explanation": match.explanation or "",
             })
 
         response = CompareResponse(
@@ -480,26 +479,22 @@ async def generate_report(
         risk_report = scorer.score(gap_result)
 
         # Generate report file
-        reports_dir = Path("reports")
-        reports_dir.mkdir(exist_ok=True)
+        output_dir = Path(__file__).parent.parent.parent / "reports"
+        output_dir.mkdir(exist_ok=True)
 
-        timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
-        filename = f"{request.framework}_{timestamp}"
+        template_dir = Path(__file__).parent.parent.parent / "templates"
 
         if request.format == "html":
-            reporter = HTMLReporter()
-            filename = f"{filename}.html"
+            reporter = HTMLReporter(template_dir=template_dir)
         elif request.format == "pdf":
-            reporter = PDFReporter()
-            filename = f"{filename}.pdf"
+            reporter = PDFReporter(template_dir=template_dir)
         else:  # excel
-            reporter = ExcelReporter()
-            filename = f"{filename}.xlsx"
+            reporter = ExcelReporter(template_dir=template_dir)
 
-        output_path = reports_dir / filename
-        reporter.generate(gap_result, risk_report, reports_dir)
+        report_path = reporter.generate(gap_result, risk_report, output_dir)
+        filename = report_path.name
 
-        file_size = output_path.stat().st_size if output_path.exists() else 0
+        file_size = report_path.stat().st_size if report_path.exists() else 0
 
         response = ReportResponse(
             filename=filename,
@@ -545,7 +540,7 @@ async def download_report(filename: str) -> FileResponse:
     """
     try:
         # Security check: prevent directory traversal
-        reports_dir = Path("reports")
+        reports_dir = Path(__file__).parent.parent.parent / "reports"
         safe_file_path = safe_path(reports_dir, filename)
 
         if not safe_file_path.exists():
@@ -555,7 +550,7 @@ async def download_report(filename: str) -> FileResponse:
         logger.info("Report downloaded", extra={"report_filename": filename})
 
         return FileResponse(
-            path=safe_file_path,
+            str(safe_file_path),
             filename=filename,
             media_type="application/octet-stream",
         )

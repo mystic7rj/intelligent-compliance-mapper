@@ -25,10 +25,16 @@ def mock_matcher() -> Mock:
     actually running ML models.
     """
     matcher = Mock()
-    
+
     # Default behavior: return empty list
     matcher.match_framework.return_value = []
-    
+
+    # The analyzer counts the actual source controls (registry metadata's
+    # control_count is unreliable / 0 in production). Supply 5 source controls
+    # so total_source_controls == 5 for the mocked frameworks.
+    matcher._fetch_framework.return_value = Mock()
+    matcher._get_controls_for_framework.return_value = [Mock() for _ in range(5)]
+
     return matcher
 
 

@@ -159,18 +159,23 @@ class CrossFrameworkAnalyzer:
             logger.error(msg)
             raise GapAnalysisError(msg)
         
-        # Calculate mapping statistics
-        total_source_controls = source_meta.control_count
+        # Calculate mapping statistics.
+        # The registry's control_count metadata can be 0, so count the actual
+        # source controls loaded from the repository instead.
+        src_fw = self._matcher._fetch_framework(source_validator)
+        source_controls = self._matcher._get_controls_for_framework(src_fw)
+        total_source_controls = len(source_controls)
         # Count unique source controls that have at least one match
         mapped_control_ids = set(match.source_control_id for match in matches)
         mapped_controls = len(mapped_control_ids)
         unmapped_controls = max(0, total_source_controls - mapped_controls)
-        
+
         # Calculate mapping percentage
-        if total_source_controls > 0:
-            percentage = (mapped_controls / total_source_controls) * 100.0
-        else:
-            percentage = 0.0
+        mapping_percentage = (
+            (mapped_controls / total_source_controls * 100)
+            if total_source_controls > 0
+            else 0.0
+        )
         
         # Build and return result
         result = CrossFrameworkResult(
@@ -179,7 +184,7 @@ class CrossFrameworkAnalyzer:
             total_source_controls=total_source_controls,
             mapped_controls=mapped_controls,
             unmapped_controls=unmapped_controls,
-            mapping_percentage=round(percentage, 2),
+            mapping_percentage=round(mapping_percentage, 2),
             matches=matches,
         )
         
